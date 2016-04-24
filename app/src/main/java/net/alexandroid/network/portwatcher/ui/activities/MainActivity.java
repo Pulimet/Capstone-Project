@@ -1,4 +1,4 @@
-package net.alexandroid.network.portwatcher.ui;
+package net.alexandroid.network.portwatcher.ui.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import net.alexandroid.network.portwatcher.R;
+import net.alexandroid.network.portwatcher.ui.fragments.MainFragment;
 
 @SuppressWarnings("ConstantConditions")
 public class MainActivity extends AppCompatActivity

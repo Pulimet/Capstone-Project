@@ -1,4 +1,4 @@
-package net.alexandroid.network.portwatcher.ui;
+package net.alexandroid.network.portwatcher.ui.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.alexandroid.network.portwatcher.R;
+import net.alexandroid.network.portwatcher.ui.fragments.MainFragment;
 import net.alexandroid.network.portwatcher.ui.dummy.DummyContent.DummyItem;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_main, parent, false);
+                .inflate(R.layout.main_fragment_item_list, parent, false);
         return new ViewHolder(view);
     }
 

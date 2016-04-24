@@ -1,4 +1,4 @@
-package net.alexandroid.network.portwatcher.ui;
+package net.alexandroid.network.portwatcher.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.alexandroid.network.portwatcher.R;
+import net.alexandroid.network.portwatcher.ui.adapters.MainRecyclerAdapter;
 import net.alexandroid.network.portwatcher.ui.dummy.DummyContent;
 import net.alexandroid.network.portwatcher.ui.dummy.DummyContent.DummyItem;
 
@@ -54,7 +55,7 @@ public class MainFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.main_fragment_item_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
