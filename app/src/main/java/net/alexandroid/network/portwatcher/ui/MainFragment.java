@@ -23,10 +23,8 @@ import net.alexandroid.network.portwatcher.ui.dummy.DummyContent.DummyItem;
  */
 public class MainFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 2;
+    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -36,7 +34,6 @@ public class MainFragment extends Fragment {
     public MainFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static MainFragment newInstance(int columnCount) {
         MainFragment fragment = new MainFragment();
@@ -102,7 +99,6 @@ public class MainFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
     }
 }
