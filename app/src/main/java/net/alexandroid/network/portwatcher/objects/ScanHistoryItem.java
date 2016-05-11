@@ -42,6 +42,15 @@ public class ScanHistoryItem {
         items.add(new ScanHistoryItem("192.168.0.1", "80,8080", "04/02/2016 16:56"));
         items.add(new ScanHistoryItem("10.0.0.138", "90", "01/03/2016 11:33"));
         items.add(new ScanHistoryItem("192.168.100.10", "2000-2005", "04/01/2016 10:34"));
+        items.add(new ScanHistoryItem("192.168.0.1", "80,8080", "04/02/2016 16:56"));
+        items.add(new ScanHistoryItem("10.0.0.138", "90", "01/03/2016 11:33"));
+        items.add(new ScanHistoryItem("192.168.100.10", "2000-2005", "04/01/2016 10:34"));
+        items.add(new ScanHistoryItem("192.168.0.1", "80,8080", "04/02/2016 16:56"));
+        items.add(new ScanHistoryItem("10.0.0.138", "90", "01/03/2016 11:33"));
+        items.add(new ScanHistoryItem("192.168.100.10", "2000-2005", "04/01/2016 10:34"));
+        items.add(new ScanHistoryItem("192.168.0.1", "80,8080", "04/02/2016 16:56"));
+        items.add(new ScanHistoryItem("10.0.0.138", "90", "01/03/2016 11:33"));
+        items.add(new ScanHistoryItem("192.168.100.10", "2000-2005", "04/01/2016 10:34"));
         return items;
     }
 }

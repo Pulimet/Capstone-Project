@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.objects.ScanHistoryItem;
 import net.alexandroid.network.portwatcher.ui.adapters.MainRecyclerAdapter;
+import net.alexandroid.network.portwatcher.ui.adapters.decorators.SimpleDividerItemDecoration;
 
 
 /**
@@ -60,6 +61,7 @@ public class MainFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext().getApplicationContext()));
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
