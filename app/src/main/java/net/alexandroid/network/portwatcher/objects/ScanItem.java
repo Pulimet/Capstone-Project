@@ -1,12 +1,24 @@
 package net.alexandroid.network.portwatcher.objects;
 
 
+import android.util.SparseArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ScanItem {
-    String strIp, strPorts, strDateTime;
+    public static final int INITAL = 0;
+    public static final int STARTED = 1;
+    public static final int FINISHED = 2;
 
+    private int scanStatus;
+
+    // systemTime, strDateTime - When scan finished
+    private long systemTime;
+    private String strIp, strPorts, strDateTime;
+    private SparseArray<Boolean> results = new SparseArray<>();
+
+    // Dummy adapter
     public ScanItem(String pStrIp, String pStrPorts, String pStrDateTime) {
         strIp = pStrIp;
         strPorts = pStrPorts;
@@ -35,6 +47,30 @@ public class ScanItem {
 
     public void setStrDateTime(String pStrDateTime) {
         strDateTime = pStrDateTime;
+    }
+
+    public int getScanStatus() {
+        return scanStatus;
+    }
+
+    public void setScanStatus(int pScanStatus) {
+        scanStatus = pScanStatus;
+    }
+
+    public SparseArray<Boolean> getResults() {
+        return results;
+    }
+
+    public void setResults(SparseArray<Boolean> pResults) {
+        results = pResults;
+    }
+
+    public long getSystemTime() {
+        return systemTime;
+    }
+
+    public void setSystemTime() {
+        systemTime = System.currentTimeMillis();
     }
 
     public static List<ScanItem> getDummyList() {
