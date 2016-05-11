@@ -13,11 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import net.alexandroid.network.portwatcher.R;
+import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.ui.fragments.MainFragment;
 
 @SuppressWarnings("ConstantConditions")
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
 
     public static final int FRAGMENT_MAIN = 0;
@@ -47,14 +48,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setFab() {
-        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-            @SuppressWarnings("ConstantConditions")
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        findViewById(R.id.fab).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                Snackbar.make(v, "Clear history?", Snackbar.LENGTH_LONG)
+                        .setAction("Clear", MainActivity.this).show();
+                break;
+            case R.id.snackbar_action:
+                MyLog.d("snackbar_action");
+                break;
+            default:
+                MyLog.d("ID: " + v.toString());
+        }
     }
 
     private void showMainFragment(Bundle savedInstanceState) {

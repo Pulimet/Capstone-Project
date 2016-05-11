@@ -7,7 +7,7 @@
                 android:orientation="horizontal"
                 android:paddingTop="16dp"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:paddingEnd="0dp"
                 android:background="@drawable/item_bg"
                 android:gravity="center_vertical">
 
@@ -16,7 +16,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginStart="6dp"
         android:layout_centerVertical="true">
 
         <TextView
@@ -43,7 +42,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
         android:layout_toRightOf="@+id/labels"
         android:orientation="vertical"
         android:layout_centerVertical="true"
@@ -74,7 +73,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="40dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:orientation="vertical"
@@ -87,7 +86,10 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/add_to_watchlist"
             android:src="@drawable/ic_menu_star"
-            android:padding="8dp"/>
+            android:paddingRight="16dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="6dp"
+            android:paddingLeft="8dp"/>
 
         <ImageView
             android:id="@+id/imgShare"
@@ -95,7 +97,10 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/share_scan_result"
             android:src="@drawable/ic_menu_share"
-            android:padding="8dp"/>
+            android:paddingRight="16dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="6dp"
+            android:paddingLeft="8dp"/>
 
     </LinearLayout>
 

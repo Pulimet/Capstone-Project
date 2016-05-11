@@ -11,4 +11,6 @@
 
     <color name="item_bg_normal">#00000000</color>
     <color name="item_bg_pressed">#999999</color>
+
+    <color name="dividerColor">#44455A64</color>
 </resources>
