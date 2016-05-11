@@ -11,9 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.alexandroid.network.portwatcher.R;
+import net.alexandroid.network.portwatcher.objects.ScanHistoryItem;
 import net.alexandroid.network.portwatcher.ui.adapters.MainRecyclerAdapter;
-import net.alexandroid.network.portwatcher.ui.dummy.DummyContent;
-import net.alexandroid.network.portwatcher.ui.dummy.DummyContent.DummyItem;
 
 
 /**
@@ -66,7 +65,7 @@ public class MainFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MainRecyclerAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MainRecyclerAdapter(ScanHistoryItem.getDummyList(), mListener));
         }
         return view;
     }
@@ -100,6 +99,6 @@ public class MainFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(ScanHistoryItem item);
     }
 }

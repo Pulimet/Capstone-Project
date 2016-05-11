@@ -5,4 +5,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+
+    // MainActivity # MainFragment
+    <string name="ip">IP:</string>
+    <string name="ports">Ports:</string>
+    <string name="when">When:</string>
+    <string name="add_to_watchlist">Add to watchlist</string>
+    <string name="share_scan_result">Share scan result</string>
 </resources>

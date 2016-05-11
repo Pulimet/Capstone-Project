@@ -1,20 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tool="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingTop="16dp"
+                android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/id"
+    <LinearLayout
+        android:id="@+id/labels"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"/>
+        android:orientation="vertical"
+        android:layout_centerVertical="true">
 
-    <TextView
-        android:id="@+id/content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ip"
+            android:textAppearance="?attr/textAppearanceListItem"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ports"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/when"
+            android:textAppearance="?attr/textAppearanceListItem"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"/>
-</LinearLayout>
+        android:layout_marginStart="16dp"
+        android:layout_toRightOf="@+id/labels"
+        android:orientation="vertical"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/tvIp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tool:text="192.168.0.1"/>
+
+        <TextView
+            android:id="@+id/tvPorts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tool:text="80"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"/>
+
+        <TextView
+            android:id="@+id/tvWhen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tool:text="25/02/1987 19:00"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/imgStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/add_to_watchlist"
+            android:src="@drawable/ic_menu_star"
+            android:padding="8dp"/>
+
+        <ImageView
+            android:id="@+id/imgShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/share_scan_result"
+            android:src="@drawable/ic_menu_share"
+            android:padding="8dp"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
