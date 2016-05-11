@@ -8,5 +8,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.fragments.MainFragment"
+    tools:context=".ui.fragments.MainHistoryFragment"
     tools:listitem="@layout/main_fragment_item_list"/>

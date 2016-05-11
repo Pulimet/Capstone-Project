@@ -8,18 +8,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.alexandroid.network.portwatcher.R;
-import net.alexandroid.network.portwatcher.helpers.MyLog;
-import net.alexandroid.network.portwatcher.objects.ScanHistoryItem;
-import net.alexandroid.network.portwatcher.ui.fragments.MainFragment;
+import net.alexandroid.network.portwatcher.objects.ScanItem;
+import net.alexandroid.network.portwatcher.ui.fragments.MainHistoryFragment;
 
 import java.util.List;
 
 public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder> implements View.OnClickListener {
 
-    private final List<ScanHistoryItem> mValues;
-    private final MainFragment.OnListFragmentInteractionListener mListener;
+    private final List<ScanItem> mValues;
+    private final MainHistoryFragment.OnListOfMainFragmentInteractionListener mListener;
 
-    public MainRecyclerAdapter(List<ScanHistoryItem> items, MainFragment.OnListFragmentInteractionListener listener) {
+    public MainRecyclerAdapter(List<ScanItem> items, MainHistoryFragment.OnListOfMainFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -51,14 +50,11 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     public void onClick(View v) {
         ViewHolder holder = (ViewHolder) v.getTag();
         if (v.getId() == holder.mView.getId()) {
-            MyLog.d("mView");
-            //mListener.onListFragmentInteraction(holder.mItem);
+            mListener.onItemClick(holder.mItem);
         } else if (v.getId() == holder.tvStar.getId()) {
-            MyLog.d("tvStar");
-            //mListener.onListFragmentInteraction(holder.mItem);
+            mListener.onStarClick(holder.mItem);
         } else if (v.getId() == holder.tvShare.getId()) {
-            MyLog.d("tvShare");
-            //mListener.onListFragmentInteraction(holder.mItem);
+            mListener.onShareClick(holder.mItem);
         }
     }
 
@@ -74,7 +70,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
         public final TextView tvWhen;
         public final ImageView tvStar;
         public final ImageView tvShare;
-        public ScanHistoryItem mItem;
+        public ScanItem mItem;
 
         public ViewHolder(View view) {
             super(view);

@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.alexandroid.network.portwatcher.R;
-import net.alexandroid.network.portwatcher.objects.ScanHistoryItem;
+import net.alexandroid.network.portwatcher.objects.ScanItem;
 import net.alexandroid.network.portwatcher.ui.adapters.MainRecyclerAdapter;
 import net.alexandroid.network.portwatcher.ui.adapters.decorators.SimpleDividerItemDecoration;
 
@@ -19,25 +19,25 @@ import net.alexandroid.network.portwatcher.ui.adapters.decorators.SimpleDividerI
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnListOfMainFragmentInteractionListener}
  * interface.
  */
-public class MainFragment extends Fragment {
+public class MainHistoryFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private OnListOfMainFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public MainFragment() {
+    public MainHistoryFragment() {
     }
 
     @SuppressWarnings("unused")
-    public static MainFragment newInstance(int columnCount) {
-        MainFragment fragment = new MainFragment();
+    public static MainHistoryFragment newInstance(int columnCount) {
+        MainHistoryFragment fragment = new MainHistoryFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -55,7 +55,7 @@ public class MainFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_main_history, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -67,7 +67,7 @@ public class MainFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MainRecyclerAdapter(ScanHistoryItem.getDummyList(), mListener));
+            recyclerView.setAdapter(new MainRecyclerAdapter(ScanItem.getDummyList(), mListener));
         }
         return view;
     }
@@ -76,12 +76,12 @@ public class MainFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-/*        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnListOfMainFragmentInteractionListener) {
+            mListener = (OnListOfMainFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
@@ -95,12 +95,10 @@ public class MainFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(ScanHistoryItem item);
+    public interface OnListOfMainFragmentInteractionListener {
+        void onItemClick(ScanItem item);
+        void onStarClick(ScanItem item);
+        void onShareClick(ScanItem item);
     }
 }

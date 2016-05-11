@@ -14,11 +14,14 @@ import android.view.View;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
-import net.alexandroid.network.portwatcher.ui.fragments.MainFragment;
+import net.alexandroid.network.portwatcher.objects.ScanItem;
+import net.alexandroid.network.portwatcher.ui.fragments.MainHistoryFragment;
 
 @SuppressWarnings("ConstantConditions")
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        View.OnClickListener,
+        MainHistoryFragment.OnListOfMainFragmentInteractionListener {
 
 
     public static final int FRAGMENT_MAIN = 0;
@@ -33,24 +36,6 @@ public class MainActivity extends AppCompatActivity
         showMainFragment(savedInstanceState);
     }
 
-    private void seToolBArAndNavigation() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    private void setFab() {
-        findViewById(R.id.fab).setOnClickListener(this);
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -63,13 +48,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             default:
                 MyLog.d("ID: " + v.toString());
-        }
-    }
-
-    private void showMainFragment(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, new MainFragment(), "tag" + FRAGMENT_MAIN).commit();
         }
     }
 
@@ -105,30 +83,76 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (item.getItemId()) {
+            case R.id.nav_camera:
+                break;
+            case R.id.nav_gallery:
+                break;
+            case R.id.nav_slideshow:
+                break;
+            case R.id.nav_manage:
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;
+    }
+
+    private void seToolBArAndNavigation() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+
+    private void showMainFragment(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, new MainHistoryFragment(), "tag" + FRAGMENT_MAIN).commit();
+        }
+    }
+
+
+    // FAB Control
+    private void setFab() {
+        findViewById(R.id.fab).setOnClickListener(this);
+    }
+
+
+    // Main fragment callbacks (History)
+    @Override
+    public void onItemClick(ScanItem item) {
+        MyLog.d("onItemClick");
+        // TODO Show dialog window with scan results and option to rescan
+    }
+
+    @Override
+    public void onStarClick(ScanItem item) {
+        // TODO Add Scan to watchlist
+        MyLog.d("onStarClick");
+    }
+
+    @Override
+    public void onShareClick(ScanItem item) {
+        // TODO Share results of scan
+        MyLog.d("onShareClick");
     }
 }
