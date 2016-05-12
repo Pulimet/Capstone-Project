@@ -105,17 +105,19 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_camera:
+            case R.id.nav_history:
                 break;
-            case R.id.nav_gallery:
+            case R.id.nav_scan:
                 break;
-            case R.id.nav_slideshow:
+            case R.id.nav_edit:
                 break;
-            case R.id.nav_manage:
+            case R.id.nav_watchlist:
+                break;
+            case R.id.nav_schedule:
                 break;
             case R.id.nav_share:
                 break;
-            case R.id.nav_send:
+            case R.id.nav_rate:
                 break;
         }
 
@@ -139,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().getItem(0).setChecked(true);
+
     }
 
     private void showMainFragment(Bundle savedInstanceState) {

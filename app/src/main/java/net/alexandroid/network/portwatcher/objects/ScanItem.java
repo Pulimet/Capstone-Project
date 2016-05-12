@@ -65,6 +65,10 @@ public class ScanItem {
         results = pResults;
     }
 
+    public void addResult(int port, boolean result) {
+        results.setValueAt(port, result);
+    }
+
     public long getSystemTime() {
         return systemTime;
     }

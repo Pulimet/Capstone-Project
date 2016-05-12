@@ -1,16 +1,26 @@
 <resources>
     <string name="app_name">Port Watcher</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
-
-
-    // MainActivity # MainFragment
+    <!--MainActivity # MainFragment-->
     <string name="ip">IP:</string>
     <string name="ports">Ports:</string>
     <string name="when">When:</string>
     <string name="add_to_watchlist">Add to watchlist</string>
     <string name="share_scan_result">Share scan result</string>
+
+    <!--MainActivity menu-->
+    <string name="action_settings">Settings</string>
+
+    <!--Navigation menu-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="history">History</string>
+    <string name="scan">Scan</string>
+    <string name="edit">Edit</string>
+    <string name="watchlist">Watchlist</string>
+    <string name="schedule">Schedule</string>
+    <string name="other">Other</string>
+    <string name="share">Share</string>
+    <string name="rate_us">Rate us</string>
 </resources>
