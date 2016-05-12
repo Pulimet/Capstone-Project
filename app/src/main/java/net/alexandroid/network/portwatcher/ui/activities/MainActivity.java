@@ -1,6 +1,7 @@
 package net.alexandroid.network.portwatcher.ui.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -36,8 +37,11 @@ public class MainActivity extends AppCompatActivity implements
     public static final int FRAGMENT_WATCH = 3;
     public static final int FRAGMENT_SCHEDULE = 4;
 
+    private static int selectedFrament;
+
     private SearchView mSearchView;
     private Toolbar mToolbar;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +57,10 @@ public class MainActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                Snackbar.make(v, "Clear history?", Snackbar.LENGTH_LONG)
-                        .setAction("Clear", MainActivity.this).show();
+                onFabClick(v);
                 break;
             case R.id.snackbar_action:
-                MyLog.d("snackbar_action");
+                onFabActionClick();
                 break;
             default:
                 MyLog.d("ID: " + v.toString());
@@ -118,22 +121,27 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.nav_history:
                 replaceFragmentWith(FRAGMENT_MAIN_HISTORY, false);
                 mToolbar.setSubtitle(R.string.history);
+                setFabVisibility(true);
                 break;
             case R.id.nav_scan:
                 replaceFragmentWith(FRAGMENT_SCAN, false);
                 mToolbar.setSubtitle(R.string.scan);
+                setFabVisibility(false);
                 break;
             case R.id.nav_edit:
                 replaceFragmentWith(FRAGMENT_EDIT, false);
                 mToolbar.setSubtitle(R.string.edit);
+                setFabVisibility(false);
                 break;
             case R.id.nav_watchlist:
                 replaceFragmentWith(FRAGMENT_WATCH, false);
                 mToolbar.setSubtitle(R.string.watchlist);
+                setFabVisibility(false);
                 break;
             case R.id.nav_schedule:
                 replaceFragmentWith(FRAGMENT_SCHEDULE, false);
                 mToolbar.setSubtitle(R.string.schedule);
+                setFabVisibility(false);
                 break;
             case R.id.nav_share:
                 // TODO share action
@@ -168,6 +176,8 @@ public class MainActivity extends AppCompatActivity implements
         mToolbar.setSubtitle(R.string.history);
     }
 
+
+    // Fragments control
     private void showMainFragment(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -176,6 +186,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void replaceFragmentWith(int fragmentInt, boolean addToBackStack) {
+        selectedFrament = fragmentInt;
+
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("tag" + fragmentInt);
         if (fragment == null) {
             MyLog.d("replaceFragmentWith - fragment == null");
@@ -210,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-
+    // Search view
     private void onTextSubmit(String pQuery) {
         mSearchView.clearFocus();
         MyLog.d("onTextSubmit: " + pQuery);
@@ -218,7 +230,28 @@ public class MainActivity extends AppCompatActivity implements
 
     // FAB Control
     private void setFab() {
-        findViewById(R.id.fab).setOnClickListener(this);
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(this);
+    }
+
+    private void setFabVisibility(boolean visible) {
+        mFab.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    private void onFabClick(View v) {
+        switch (selectedFrament) {
+            case FRAGMENT_MAIN_HISTORY:
+                Snackbar.make(v, R.string.clear_history, Snackbar.LENGTH_LONG).setAction(R.string.clear, MainActivity.this).show();
+                break;
+        }
+    }
+
+    private void onFabActionClick() {
+        switch (selectedFrament) {
+            case FRAGMENT_MAIN_HISTORY:
+                MyLog.d("snackbar_action");
+                break;
+        }
     }
 
 

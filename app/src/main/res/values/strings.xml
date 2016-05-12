@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Port Watcher</string>
 
+    <!--SnackBar-->
+    <string name="clear_history">Clear history?</string>
+    <string name="clear">Clear</string>
 
 
     <!--MainActivity # MainFragment-->
@@ -26,5 +29,6 @@
     <string name="other">Other</string>
     <string name="share">Share</string>
     <string name="rate_us">Rate us</string>
+
 
 </resources>
