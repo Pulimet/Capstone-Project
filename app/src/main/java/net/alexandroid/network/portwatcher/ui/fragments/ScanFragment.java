@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import net.alexandroid.network.portwatcher.R;
+import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.task.Ping;
 import net.alexandroid.network.portwatcher.ui.activities.MainActivity;
 
@@ -52,6 +53,7 @@ public class ScanFragment extends Fragment {
     }
 
     public void refresh() {
+        MyLog.d("refresh");
         tvStatus.setText("");
         progressBar.setVisibility(View.VISIBLE);
         start();

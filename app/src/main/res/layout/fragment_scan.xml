@@ -23,7 +23,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            tool:text="192.168.0.1"/>
+            style="@android:style/TextAppearance.Medium"
+            tool:text="192.168.0.1"
+            android:layout_marginBottom="2dp"/>
 
         <TextView
             android:layout_width="wrap_content"
