@@ -7,7 +7,7 @@ import net.alexandroid.network.portwatcher.MyApplication;
 import java.text.MessageFormat;
 
 public class MyLog {
-    public static final String TAG = "WATCHER - ";
+    public static final String TAG = "XSW - ";
 
     public static void d(String msg) {
         if (MyApplication.SHOW_LOGS) {

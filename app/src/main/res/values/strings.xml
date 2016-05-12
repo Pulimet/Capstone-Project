@@ -31,4 +31,11 @@
     <string name="rate_us">Rate us</string>
 
 
+    <!--MainActivity # ScanFragment-->
+    <string name="host">HOST:</string>
+    <string name="ping">PING:</string>
+    <string name="success">SUCCESS</string>
+    <string name="fail">FAIL</string>
+
+
 </resources>

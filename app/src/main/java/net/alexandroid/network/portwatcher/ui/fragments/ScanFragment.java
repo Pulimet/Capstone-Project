@@ -1,12 +1,17 @@
 package net.alexandroid.network.portwatcher.ui.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import net.alexandroid.network.portwatcher.R;
+import net.alexandroid.network.portwatcher.task.Ping;
+import net.alexandroid.network.portwatcher.ui.activities.MainActivity;
 
 
 /**
@@ -17,6 +22,10 @@ import net.alexandroid.network.portwatcher.R;
  */
 public class ScanFragment extends Fragment {
 
+    private static boolean sPingResult;
+
+    private TextView tvQuery, tvStatus;
+    private ProgressBar progressBar;
     //private OnListOfMainFragmentInteractionListener mListener;
 
     /**
@@ -27,13 +36,53 @@ public class ScanFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
-
+        setViews(view);
+        start();
         return view;
     }
+
+
+    private void setViews(View v) {
+        tvQuery = (TextView) v.findViewById(R.id.tvQuery);
+        tvStatus = (TextView) v.findViewById(R.id.tvStatus);
+        progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+    }
+
+    public void refresh() {
+        tvStatus.setText("");
+        progressBar.setVisibility(View.VISIBLE);
+        start();
+    }
+
+    private void start() {
+        tvQuery.setText(MainActivity.strLastQuery);
+        checkAndPing(MainActivity.strLastQuery);
+    }
+
+
+    private void checkAndPing(String pStrLastQuery) {
+        // TODO Add internet connection check
+
+        new Thread(new Ping(pStrLastQuery, new Ping.CallBack() {
+            @Override
+            public void onResult(String strHost, boolean pingResult) {
+                sPingResult = pingResult;
+                getActivity().runOnUiThread(onPingResult);
+            }
+        })).start();
+    }
+
+    private Runnable onPingResult = new Runnable() {
+        @Override
+        public void run() {
+            progressBar.setVisibility(View.GONE);
+            tvStatus.setText(sPingResult ? getString(R.string.success) : getString(R.string.fail));
+            tvStatus.setTextColor(sPingResult ? getResources().getColor(R.color.colorAccent) : Color.RED);
+        }
+    };
 
 /*
     @Override

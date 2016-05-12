@@ -1,5 +1,6 @@
 package net.alexandroid.network.portwatcher.ui.activities;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -11,6 +12,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,20 +33,21 @@ public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
         MainHistoryFragment.OnListOfMainFragmentInteractionListener {
 
-
     public static final int FRAGMENT_MAIN_HISTORY = 0;
     public static final int FRAGMENT_SCAN = 1;
     public static final int FRAGMENT_EDIT = 2;
     public static final int FRAGMENT_WATCH = 3;
     public static final int FRAGMENT_SCHEDULE = 4;
 
+    public static String strLastQuery;
+
     private static int selectedFragment;
-    private static String strLastQuery;
 
     private SearchView mSearchView;
     private Toolbar mToolbar;
     private FloatingActionButton mFab;
     private NavigationView mNavigationView;
+    private Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements
         selectedFragment = fragmentInt;
         setFab();
 
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag("tag" + fragmentInt);
+        fragment = getSupportFragmentManager().findFragmentByTag("tag" + fragmentInt);
         if (fragment == null) {
             MyLog.d("replaceFragmentWith - fragment == null");
             switch (fragmentInt) {
@@ -213,12 +217,19 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fragment.setEnterTransition(new Fade());
+            fragment.setExitTransition(new Slide());
+        }
+
         if (addToBackStack) {
             getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                    .replace(R.id.fragment_container, fragment, "tag" + fragmentInt).commitAllowingStateLoss();
+                    .replace(R.id.fragment_container, fragment, "tag" + fragmentInt)
+                    .commitAllowingStateLoss();
         } else {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment, "tag" + fragmentInt).commitAllowingStateLoss();
+                    .replace(R.id.fragment_container, fragment, "tag" + fragmentInt)
+                    .commitAllowingStateLoss();
         }
     }
 
@@ -227,9 +238,14 @@ public class MainActivity extends AppCompatActivity implements
         MyLog.d("onTextSubmit: " + pQuery);
         strLastQuery = pQuery;
         mSearchView.onActionViewCollapsed();
-        MenuItem menuItem = mNavigationView.getMenu().getItem(FRAGMENT_SCAN);
-        menuItem.setChecked(true);
-        onNavigationItemSelected(menuItem);
+        if (selectedFragment == FRAGMENT_SCAN && fragment instanceof ScanFragment) {
+            ScanFragment scanFragment = (ScanFragment) fragment;
+            scanFragment.refresh();
+        } else {
+            MenuItem menuItem = mNavigationView.getMenu().getItem(FRAGMENT_SCAN);
+            menuItem.setChecked(true);
+            onNavigationItemSelected(menuItem);
+        }
     }
 
     // FAB Control
@@ -263,13 +279,17 @@ public class MainActivity extends AppCompatActivity implements
             case FRAGMENT_MAIN_HISTORY:
                 Snackbar.make(v, R.string.clear_history, Snackbar.LENGTH_LONG).setAction(R.string.clear, MainActivity.this).show();
                 break;
+            case FRAGMENT_SCAN:
+                // TODO Scan
+                break;
         }
     }
 
     private void onFabActionClick() {
+        MyLog.d("snackbar_action");
         switch (selectedFragment) {
             case FRAGMENT_MAIN_HISTORY:
-                MyLog.d("snackbar_action");
+                // TODO Clear history
                 break;
         }
     }
