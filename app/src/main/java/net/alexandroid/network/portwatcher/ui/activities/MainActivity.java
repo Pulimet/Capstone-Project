@@ -163,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-
     private void seToolBarAndNavigation() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -285,7 +284,9 @@ public class MainActivity extends AppCompatActivity implements
                 Snackbar.make(v, R.string.clear_history, Snackbar.LENGTH_LONG).setAction(R.string.clear, MainActivity.this).show();
                 break;
             case FRAGMENT_SCAN:
-                // TODO Scan
+                if (fragment instanceof ScanFragment) {
+                    ((ScanFragment) fragment).onFabClick();
+                }
                 break;
         }
     }

@@ -26,7 +26,8 @@ import net.alexandroid.network.portwatcher.ui.activities.MainActivity;
  * Activities containing this fragment MUST implement the {@lin OnListOfMainFragmentInteractionListener}
  * interface.
  */
-public class ScanFragment extends Fragment implements TextWatcher {
+public class ScanFragment extends Fragment implements
+        TextWatcher {
 
     private static boolean sPingResult;
 
@@ -58,7 +59,6 @@ public class ScanFragment extends Fragment implements TextWatcher {
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         inputLayoutPort = (TextInputLayout) v.findViewById(R.id.input_layout_port);
         inputPort = (EditText) v.findViewById(R.id.input_port);
-
         inputPort.addTextChangedListener(this);
     }
 
@@ -87,7 +87,10 @@ public class ScanFragment extends Fragment implements TextWatcher {
     public void afterTextChanged(Editable s) {
         validatePort();
     }
-    //--------------
+
+    public void onFabClick() {
+        validatePort();
+    }
 
     private boolean validatePort() {
         // TODO add input format validation
