@@ -17,7 +17,18 @@ public class Ping implements Runnable {
 
     @Override
     public void run() {
-        mCallBack.onResult(strHost, pingHost(strHost));
+        // TODO Add timeout timer
+        boolean result = pingHost(strHost);
+        if (mCallBack != null) {
+            mCallBack.onResult(strHost, result);
+        }
+    }
+
+    private void onTimeOut() {
+        if (mCallBack != null) {
+            mCallBack.onResult(strHost, false);
+            mCallBack = null;
+        }
     }
 
 

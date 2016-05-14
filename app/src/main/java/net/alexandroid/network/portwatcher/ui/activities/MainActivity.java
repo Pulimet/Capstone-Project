@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements
     public static final int FRAGMENT_WATCH = 3;
     public static final int FRAGMENT_SCHEDULE = 4;
 
-    public static String strLastQuery;
+    public static String strLastQuery = "google.com";
 
     private static int selectedFragment;
 
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.main, menu);
 
         mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearchView.setQueryHint(getString(R.string.hint_search_view));
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -104,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements
         });
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -161,6 +161,8 @@ public class MainActivity extends AppCompatActivity implements
         }
         return true;
     }
+
+
 
     private void seToolBarAndNavigation() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -239,13 +241,16 @@ public class MainActivity extends AppCompatActivity implements
         strLastQuery = pQuery;
         mSearchView.onActionViewCollapsed();
         if (selectedFragment == FRAGMENT_SCAN && fragment instanceof ScanFragment) {
-            ScanFragment scanFragment = (ScanFragment) fragment;
-            scanFragment.refresh();
+            ((ScanFragment) fragment).refresh();
         } else {
-            MenuItem menuItem = mNavigationView.getMenu().getItem(FRAGMENT_SCAN);
-            menuItem.setChecked(true);
-            onNavigationItemSelected(menuItem);
+            selectSideMenuItem(FRAGMENT_SCAN);
         }
+    }
+
+    private void selectSideMenuItem(int fragment) {
+        MenuItem menuItem = mNavigationView.getMenu().getItem(fragment);
+        menuItem.setChecked(true);
+        onNavigationItemSelected(menuItem);
     }
 
     // FAB Control

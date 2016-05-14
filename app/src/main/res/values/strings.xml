@@ -5,7 +5,6 @@
     <string name="clear_history">Clear history?</string>
     <string name="clear">Clear</string>
 
-
     <!--MainActivity # MainFragment-->
     <string name="ip">IP:</string>
     <string name="ports">Ports:</string>
@@ -15,6 +14,7 @@
 
     <!--MainActivity menu-->
     <string name="action_settings">Settings</string>
+    <string name="hint_search_view">google.com/10.0.0.1</string>
 
     <!--Navigation menu-->
     <string name="desc_app_icon">App icon</string>
@@ -36,6 +36,7 @@
     <string name="ping">PING:</string>
     <string name="success">SUCCESS</string>
     <string name="fail">FAIL</string>
-
+    <string name="hint_port">Ports (ex: 80, 100–200)</string>
+    <string name="enter_custom_ports">Enter custom ports</string>
 
 </resources>

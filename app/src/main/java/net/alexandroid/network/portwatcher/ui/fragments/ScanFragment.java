@@ -2,10 +2,15 @@ package net.alexandroid.network.portwatcher.ui.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,12 +26,14 @@ import net.alexandroid.network.portwatcher.ui.activities.MainActivity;
  * Activities containing this fragment MUST implement the {@lin OnListOfMainFragmentInteractionListener}
  * interface.
  */
-public class ScanFragment extends Fragment {
+public class ScanFragment extends Fragment implements TextWatcher {
 
     private static boolean sPingResult;
 
     private TextView tvQuery, tvStatus;
     private ProgressBar progressBar;
+    private TextInputLayout inputLayoutPort;
+    private EditText inputPort;
     //private OnListOfMainFragmentInteractionListener mListener;
 
     /**
@@ -45,11 +52,14 @@ public class ScanFragment extends Fragment {
         return view;
     }
 
-
     private void setViews(View v) {
         tvQuery = (TextView) v.findViewById(R.id.tvQuery);
         tvStatus = (TextView) v.findViewById(R.id.tvStatus);
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+        inputLayoutPort = (TextInputLayout) v.findViewById(R.id.input_layout_port);
+        inputPort = (EditText) v.findViewById(R.id.input_port);
+
+        inputPort.addTextChangedListener(this);
     }
 
     public void refresh() {
@@ -64,7 +74,43 @@ public class ScanFragment extends Fragment {
         checkAndPing(MainActivity.strLastQuery);
     }
 
+    // TextWatcher
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
 
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        validatePort();
+    }
+    //--------------
+
+    private boolean validatePort() {
+        // TODO add input format validation
+        String inputText = inputPort.getText().toString().trim();
+        if (inputText.isEmpty()) {
+            inputLayoutPort.setError(getString(R.string.enter_custom_ports));
+            requestFocus(inputPort);
+            return false;
+        } else {
+            inputLayoutPort.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
+
+    // PING
     private void checkAndPing(String pStrLastQuery) {
         // TODO Add internet connection check
 
