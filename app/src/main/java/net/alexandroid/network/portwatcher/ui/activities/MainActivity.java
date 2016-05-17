@@ -103,6 +103,14 @@ public class MainActivity extends AppCompatActivity implements
                 return false;
             }
         });
+        mSearchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    mSearchView.onActionViewCollapsed();
+                }
+            }
+        });
         return true;
     }
 
@@ -264,10 +272,10 @@ public class MainActivity extends AppCompatActivity implements
                 setFabVisibility(true);
                 mFab.setImageResource(R.drawable.ic_delete);
                 break;
-            case FRAGMENT_SCAN:
+/*            case FRAGMENT_SCAN:
                 setFabVisibility(true);
                 mFab.setImageResource(R.drawable.ic_menu_search_white);
-                break;
+                break;*/
             default:
                 setFabVisibility(false);
         }
@@ -283,11 +291,11 @@ public class MainActivity extends AppCompatActivity implements
             case FRAGMENT_MAIN_HISTORY:
                 Snackbar.make(v, R.string.clear_history, Snackbar.LENGTH_LONG).setAction(R.string.clear, MainActivity.this).show();
                 break;
-            case FRAGMENT_SCAN:
+/*            case FRAGMENT_SCAN:
                 if (fragment instanceof ScanFragment) {
                     ((ScanFragment) fragment).onFabClick();
                 }
-                break;
+                break;*/
         }
     }
 

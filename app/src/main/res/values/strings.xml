@@ -34,9 +34,12 @@
     <!--MainActivity # ScanFragment-->
     <string name="host">HOST:</string>
     <string name="ping">PING:</string>
-    <string name="success">SUCCESS</string>
-    <string name="fail">FAIL</string>
-    <string name="hint_port">Ports (ex: 80, 100–200)</string>
-    <string name="enter_custom_ports">Enter custom ports</string>
+    <string name="success">Success</string>
+    <string name="ping_again">Ping Again</string>
+    <string name="fail">Fail</string>
+    <string name="hint_port">Custom ports (ex: 80, 100–200)</string>
+    <string name="enter_custom_ports">Enter custom ports or click on predefined buttons</string>
+    <string name="btn_scan">scan</string>
+
 
 </resources>

@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ import net.alexandroid.network.portwatcher.ui.activities.MainActivity;
  * interface.
  */
 public class ScanFragment extends Fragment implements
+        View.OnClickListener,
         TextWatcher {
 
     private static boolean sPingResult;
@@ -35,6 +38,8 @@ public class ScanFragment extends Fragment implements
     private ProgressBar progressBar;
     private TextInputLayout inputLayoutPort;
     private EditText inputPort;
+    private ImageView btnRePing;
+    private Button btnScan;
     //private OnListOfMainFragmentInteractionListener mListener;
 
     /**
@@ -49,6 +54,7 @@ public class ScanFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
         setViews(view);
+        setListeners();
         start();
         return view;
     }
@@ -59,19 +65,42 @@ public class ScanFragment extends Fragment implements
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         inputLayoutPort = (TextInputLayout) v.findViewById(R.id.input_layout_port);
         inputPort = (EditText) v.findViewById(R.id.input_port);
+        btnRePing = (ImageView) v.findViewById(R.id.btnRePing);
+        btnScan = (Button) v.findViewById(R.id.btnScan);
+    }
+
+    private void setListeners() {
         inputPort.addTextChangedListener(this);
+        btnRePing.setOnClickListener(this);
+        btnScan.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnRePing:
+                tvStatus.setText("");
+                progressBar.setVisibility(View.VISIBLE);
+                btnRePing.setVisibility(View.INVISIBLE);
+                checkAndPing();
+                break;
+            case R.id.btnScan:
+                // TODO Add scan code
+                break;
+        }
     }
 
     public void refresh() {
         MyLog.d("refresh");
         tvStatus.setText("");
         progressBar.setVisibility(View.VISIBLE);
+        btnRePing.setVisibility(View.INVISIBLE);
         start();
     }
 
     private void start() {
         tvQuery.setText(MainActivity.strLastQuery);
-        checkAndPing(MainActivity.strLastQuery);
+        checkAndPing();
     }
 
     // TextWatcher
@@ -87,10 +116,12 @@ public class ScanFragment extends Fragment implements
     public void afterTextChanged(Editable s) {
         validatePort();
     }
+    // ---------
 
-    public void onFabClick() {
+
+/*    public void onFabClick() {
         validatePort();
-    }
+    }*/
 
     private boolean validatePort() {
         // TODO add input format validation
@@ -114,14 +145,16 @@ public class ScanFragment extends Fragment implements
 
 
     // PING
-    private void checkAndPing(String pStrLastQuery) {
+    private void checkAndPing() {
         // TODO Add internet connection check
 
-        new Thread(new Ping(pStrLastQuery, new Ping.CallBack() {
+        new Thread(new Ping(MainActivity.strLastQuery, new Ping.CallBack() {
             @Override
             public void onResult(String strHost, boolean pingResult) {
                 sPingResult = pingResult;
-                getActivity().runOnUiThread(onPingResult);
+                if (isVisible()) {
+                    getActivity().runOnUiThread(onPingResult);
+                }
             }
         })).start();
     }
@@ -130,6 +163,7 @@ public class ScanFragment extends Fragment implements
         @Override
         public void run() {
             progressBar.setVisibility(View.GONE);
+            btnRePing.setVisibility(View.VISIBLE);
             tvStatus.setText(sPingResult ? getString(R.string.success) : getString(R.string.fail));
             tvStatus.setTextColor(sPingResult ? getResources().getColor(R.color.colorAccent) : Color.RED);
         }
