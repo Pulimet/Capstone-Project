@@ -62,14 +62,14 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button_negative"
+                    android:id="@+id/btnRescan"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/rescan"/>
 
                 <Button
-                    android:id="@+id/button_positive"
+                    android:id="@+id/btnOk"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
