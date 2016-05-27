@@ -1,5 +1,6 @@
 package net.alexandroid.network.portwatcher.ui.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -20,6 +21,7 @@ import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.task.Ping;
 import net.alexandroid.network.portwatcher.ui.activities.MainActivity;
+import net.alexandroid.network.portwatcher.ui.activities.ResultActivity;
 
 
 /**
@@ -85,7 +87,10 @@ public class ScanFragment extends Fragment implements
                 checkAndPing();
                 break;
             case R.id.btnScan:
+                // TODO Add internet connection check
                 // TODO Add scan code
+
+                startActivity(new Intent(getActivity(), ResultActivity.class));
                 break;
         }
     }

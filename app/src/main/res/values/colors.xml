@@ -11,4 +11,7 @@
 
     <!-- List -->
     <color name="dividerColor">#44455A64</color>
+
+    <!--Dialog-->
+    <color name="trans90">#90000000</color>
 </resources>

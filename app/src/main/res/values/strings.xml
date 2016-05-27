@@ -42,4 +42,10 @@
     <string name="btn_scan">scan</string>
 
 
+    <!--ResultActivity - Dialog-->
+    <string name="desc_exit_dialog">Exit dialog</string>
+    <string name="rescan">Rescan</string>
+    <string name="ok">Ok</string>
+
+
 </resources>
