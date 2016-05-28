@@ -1,5 +1,6 @@
 package net.alexandroid.network.portwatcher.ui.adapters;
 
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +12,14 @@ import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.objects.ScanItem;
 import net.alexandroid.network.portwatcher.ui.fragments.MainHistoryFragment;
 
-import java.util.List;
-
 public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder> implements View.OnClickListener {
 
-    private final List<ScanItem> mValues;
+    private Cursor mCursor;
+    private View mEmptyView;
     private final MainHistoryFragment.OnListOfMainFragmentInteractionListener mListener;
 
-    public MainRecyclerAdapter(List<ScanItem> items, MainHistoryFragment.OnListOfMainFragmentInteractionListener listener) {
-        mValues = items;
+    public MainRecyclerAdapter(View emptyView, MainHistoryFragment.OnListOfMainFragmentInteractionListener listener) {
+        mEmptyView = emptyView;
         mListener = listener;
     }
 
@@ -31,51 +31,68 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
+        mCursor.moveToPosition(position);
 
-        holder.tvIp.setText(holder.mItem.getStrIp());
-        holder.tvPorts.setText(holder.mItem.getStrPorts());
-        holder.tvWhen.setText(holder.mItem.getStrDateTime());
-
+        holder.tvHost.setText(mCursor.getString(MainHistoryFragment.COL_HOST));
+        holder.tvPorts.setText(mCursor.getString(MainHistoryFragment.COL_PORTS));
+        holder.tvWhen.setText(mCursor.getString(MainHistoryFragment.COL_WHEN));
 
         holder.itemView.setOnClickListener(this);
-        holder.itemView.setTag(holder);
+        holder.itemView.setTag(position);
         holder.tvStar.setOnClickListener(this);
-        holder.tvStar.setTag(holder);
+        holder.tvStar.setTag(position);
         holder.tvShare.setOnClickListener(this);
-        holder.tvShare.setTag(holder);
+        holder.tvShare.setTag(position);
     }
 
     @Override
     public void onClick(View v) {
-        ViewHolder holder = (ViewHolder) v.getTag();
-        if (v.getId() == holder.mView.getId()) {
-            mListener.onItemClick(holder.mItem);
-        } else if (v.getId() == holder.tvStar.getId()) {
-            mListener.onStarClick(holder.mItem);
-        } else if (v.getId() == holder.tvShare.getId()) {
-            mListener.onShareClick(holder.mItem);
+        int position = (int) v.getTag();
+        mCursor.moveToPosition(position);
+
+        ScanItem scanItem = new ScanItem(
+                mCursor.getString(MainHistoryFragment.COL_HOST),
+                mCursor.getString(MainHistoryFragment.COL_PORTS),
+                mCursor.getString(MainHistoryFragment.COL_WHEN),
+                mCursor.getString(MainHistoryFragment.COL_WERE_OPEN)
+        );
+
+        switch (v.getId()) {
+            case R.id.imgStar:
+                mListener.onStarClick(scanItem);
+                break;
+            case R.id.imgShare:
+                mListener.onShareClick(scanItem);
+                break;
+            default:
+                mListener.onItemClick(scanItem);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        if (null == mCursor) return 0;
+        return mCursor.getCount();
+    }
+
+    public void swapCursor(Cursor newCursor) {
+        mCursor = newCursor;
+        notifyDataSetChanged();
+        mEmptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView tvIp;
+        public final TextView tvHost;
         public final TextView tvPorts;
         public final TextView tvWhen;
         public final ImageView tvStar;
         public final ImageView tvShare;
-        public ScanItem mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            tvIp = (TextView) view.findViewById(R.id.tvIp);
+            tvHost = (TextView) view.findViewById(R.id.tvIp);
             tvPorts = (TextView) view.findViewById(R.id.tvPorts);
             tvWhen = (TextView) view.findViewById(R.id.tvWhen);
             tvStar = (ImageView) view.findViewById(R.id.imgStar);

@@ -26,6 +26,12 @@
             android:name=".ui.activities.ResultActivity"
             android:theme="@style/AppTheme.Dialog"/>
 
+        <provider
+            android:name=".data.Provider"
+            android:authorities="@string/content_authority"
+            android:exported="false"
+            android:syncable="true"/>
+
 
     </application>
 

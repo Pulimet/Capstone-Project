@@ -1,8 +1,6 @@
 package net.alexandroid.network.portwatcher.objects;
 
 
-import android.util.SparseArray;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,22 +13,22 @@ public class ScanItem {
 
     // systemTime, strDateTime - When scan finished
     private long systemTime;
-    private String strIp, strPorts, strDateTime;
-    private SparseArray<Boolean> results = new SparseArray<>();
+    private String strHost, strPorts, strDateTime, strWereOpen;
 
     // Dummy adapter
-    public ScanItem(String pStrIp, String pStrPorts, String pStrDateTime) {
-        strIp = pStrIp;
+    public ScanItem(String pStrHost, String pStrPorts, String pStrDateTime, String pStrWereOpen) {
+        strHost = pStrHost;
         strPorts = pStrPorts;
         strDateTime = pStrDateTime;
+        strWereOpen = pStrWereOpen;
     }
 
-    public String getStrIp() {
-        return strIp;
+    public String getStrHost() {
+        return strHost;
     }
 
-    public void setStrIp(String pStrIp) {
-        strIp = pStrIp;
+    public void setStrHost(String pStrHost) {
+        strHost = pStrHost;
     }
 
     public String getStrPorts() {
@@ -57,18 +55,6 @@ public class ScanItem {
         scanStatus = pScanStatus;
     }
 
-    public SparseArray<Boolean> getResults() {
-        return results;
-    }
-
-    public void setResults(SparseArray<Boolean> pResults) {
-        results = pResults;
-    }
-
-    public void addResult(int port, boolean result) {
-        results.setValueAt(port, result);
-    }
-
     public long getSystemTime() {
         return systemTime;
     }
@@ -77,20 +63,12 @@ public class ScanItem {
         systemTime = System.currentTimeMillis();
     }
 
-    public static List<ScanItem> getDummyList() {
-        List<ScanItem> items = new ArrayList<>();
-        items.add(new ScanItem("192.168.0.1", "80,8080", "04/02/2016 16:56"));
-        items.add(new ScanItem("10.0.0.138", "90", "01/03/2016 11:33"));
-        items.add(new ScanItem("192.168.100.10", "2000-2005", "04/01/2016 10:34"));
-        items.add(new ScanItem("192.168.0.1", "80,8080", "04/02/2016 16:56"));
-        items.add(new ScanItem("10.0.0.138", "90", "01/03/2016 11:33"));
-        items.add(new ScanItem("192.168.100.10", "2000-2005", "04/01/2016 10:34"));
-        items.add(new ScanItem("192.168.0.1", "80,8080", "04/02/2016 16:56"));
-        items.add(new ScanItem("10.0.0.138", "90", "01/03/2016 11:33"));
-        items.add(new ScanItem("192.168.100.10", "2000-2005", "04/01/2016 10:34"));
-        items.add(new ScanItem("192.168.0.1", "80,8080", "04/02/2016 16:56"));
-        items.add(new ScanItem("10.0.0.138", "90", "01/03/2016 11:33"));
-        items.add(new ScanItem("192.168.100.10", "2000-2005", "04/01/2016 10:34"));
-        return items;
+
+    public String getStrWereOpen() {
+        return strWereOpen;
+    }
+
+    public void setStrWereOpen(String pStrWereOpen) {
+        strWereOpen = pStrWereOpen;
     }
 }

@@ -34,7 +34,7 @@ public class DbContract {
         public static final String COLUMN_HOST = "host";
         public static final String COLUMN_PORTS = "ports";
         public static final String COLUMN_WERE_OPEN = "were_open";
-        public static final String COLUMN_DATE_TIME = "when";
+        public static final String COLUMN_DATE_TIME = "date_time";
 
         public static Uri buildHistoryUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

@@ -1,16 +1,20 @@
 <resources>
     <string name="app_name">Port Watcher</string>
 
+    <!--Content Provider-->
+    <string name="content_authority">net.alexandroid.network.portwatcher</string>
+
     <!--SnackBar-->
     <string name="clear_history">Clear history?</string>
     <string name="clear">Clear</string>
 
-    <!--MainActivity # MainFragment-->
+    <!--MainActivity # MainFragment (History)-->
     <string name="host2">Host:</string>
     <string name="ports">Ports:</string>
     <string name="when">When:</string>
     <string name="desc_add_to_watchlist">Add to watchlist</string>
     <string name="desc_share_scan_result">Share scan result</string>
+    <string name="history_is_empty">History is empty</string>
 
     <!--MainActivity menu-->
     <string name="action_settings">Settings</string>
@@ -49,6 +53,7 @@
     <string name="desc_exit_dialog">Exit dialog</string>
     <string name="rescan">Rescan</string>
     <string name="ok">Ok</string>
+
 
 
 </resources>

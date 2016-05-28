@@ -43,7 +43,7 @@ public class Provider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
 
         // Use the Uri Matcher to determine what kind of URI this is.
         final int match = sUriMatcher.match(uri);
