@@ -7,6 +7,8 @@ import java.io.IOException;
 
 public class Ping implements Runnable {
 
+    public static final int TIMEOUT = 5000;
+
     private String strHost;
     private CallBack mCallBack;
 
@@ -17,12 +19,28 @@ public class Ping implements Runnable {
 
     @Override
     public void run() {
-        // TODO Add timeout timer
+        new Thread(timeOut).start();
+
         boolean result = pingHost(strHost);
         if (mCallBack != null) {
             mCallBack.onResult(strHost, result);
+            mCallBack = null;
         }
     }
+
+    private Runnable timeOut = new Runnable() {
+        @Override
+        public void run() {
+            MyLog.d("Start timer");
+            try {
+                Thread.sleep(TIMEOUT);
+            } catch (InterruptedException pE) {
+                pE.printStackTrace();
+            }
+            MyLog.d("End timer");
+            onTimeOut();
+        }
+    };
 
     private void onTimeOut() {
         if (mCallBack != null) {

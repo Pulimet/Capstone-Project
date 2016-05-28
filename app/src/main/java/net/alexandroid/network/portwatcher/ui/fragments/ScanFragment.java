@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
+import net.alexandroid.network.portwatcher.helpers.Utils;
 import net.alexandroid.network.portwatcher.task.Ping;
 import net.alexandroid.network.portwatcher.ui.activities.MainActivity;
 import net.alexandroid.network.portwatcher.ui.activities.ResultActivity;
@@ -81,17 +82,25 @@ public class ScanFragment extends Fragment implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnRePing:
-                tvStatus.setText("");
-                progressBar.setVisibility(View.VISIBLE);
-                btnRePing.setVisibility(View.INVISIBLE);
-                checkAndPing();
+                if (Utils.isNetworkAvailable(getContext().getApplicationContext())) {
+                    tvStatus.setText("");
+                    progressBar.setVisibility(View.VISIBLE);
+                    btnRePing.setVisibility(View.INVISIBLE);
+                    checkAndPing();
+                } else {
+                    // TODO Show connection problem message
+                }
                 break;
             case R.id.btnScan:
-                validatePort();
-                // TODO Add internet connection check
-                // TODO Add scan code
+                if (Utils.isNetworkAvailable(getContext().getApplicationContext())) {
 
-                startActivity(new Intent(getActivity(), ResultActivity.class));
+                    validatePort();
+                    // TODO Add scan code
+
+                    startActivity(new Intent(getActivity(), ResultActivity.class));
+                } else {
+                    // TODO Show connection problem message
+                }
                 break;
         }
     }

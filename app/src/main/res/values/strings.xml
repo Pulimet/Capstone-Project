@@ -6,7 +6,7 @@
     <string name="clear">Clear</string>
 
     <!--MainActivity # MainFragment-->
-    <string name="ip">IP:</string>
+    <string name="host2">Host:</string>
     <string name="ports">Ports:</string>
     <string name="when">When:</string>
     <string name="desc_add_to_watchlist">Add to watchlist</string>
