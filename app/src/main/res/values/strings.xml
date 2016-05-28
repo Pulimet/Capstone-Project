@@ -30,6 +30,9 @@
     <string name="share">Share</string>
     <string name="rate_us">Rate us</string>
 
+    <string name="rate_url">market://details?id=</string>
+    <string name="share_app_msg">Check out Port Watcher. Scan ports and more…</string>
+    <string name="share_url" translatable="false">https://play.google.com/store/apps/details?id=</string>
 
     <!--MainActivity # ScanFragment-->
     <string name="host">HOST:</string>

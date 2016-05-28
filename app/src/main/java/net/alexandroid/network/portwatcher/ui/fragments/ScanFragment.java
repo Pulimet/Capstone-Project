@@ -87,6 +87,7 @@ public class ScanFragment extends Fragment implements
                 checkAndPing();
                 break;
             case R.id.btnScan:
+                validatePort();
                 // TODO Add internet connection check
                 // TODO Add scan code
 
@@ -119,7 +120,6 @@ public class ScanFragment extends Fragment implements
 
     @Override
     public void afterTextChanged(Editable s) {
-        validatePort();
     }
     // ---------
 

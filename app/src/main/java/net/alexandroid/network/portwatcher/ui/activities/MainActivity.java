@@ -1,5 +1,7 @@
 package net.alexandroid.network.portwatcher.ui.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -153,12 +155,10 @@ public class MainActivity extends AppCompatActivity implements
                 mToolbar.setSubtitle(R.string.schedule);
                 break;
             case R.id.nav_share:
-                MyLog.d("nav_share");
-                // TODO share action
+                actionShare();
                 break;
             case R.id.nav_rate:
-                MyLog.d("nav_rate");
-                // TODO rate action
+                actionRate();
                 break;
         }
 
@@ -188,6 +188,23 @@ public class MainActivity extends AppCompatActivity implements
         mToolbar.setSubtitle(R.string.history);
     }
 
+
+    // Navigation menu actions
+    private void actionRate() {
+        Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.rate_url) + getPackageName()));
+        marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        startActivity(marketIntent);
+    }
+
+    private void actionShare() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        String appPackageName = getPackageName();
+        sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_msg)
+                + " " + Uri.parse(getString(R.string.share_url) + appPackageName));
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, getString(R.string.share)));
+    }
 
     // Fragments control
     private void showMainFragment(Bundle savedInstanceState) {
@@ -280,7 +297,6 @@ public class MainActivity extends AppCompatActivity implements
                 setFabVisibility(false);
         }
     }
-
 
     private void setFabVisibility(boolean visible) {
         mFab.setVisibility(visible ? View.VISIBLE : View.GONE);
