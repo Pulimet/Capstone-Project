@@ -1,5 +1,6 @@
 package net.alexandroid.network.portwatcher.ui.fragments;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
+import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.objects.ScanItem;
 import net.alexandroid.network.portwatcher.ui.adapters.MainRecyclerAdapter;
 import net.alexandroid.network.portwatcher.ui.adapters.decorators.SimpleDividerItemDecoration;
@@ -90,16 +92,22 @@ public class MainHistoryFragment extends Fragment implements LoaderManager.Loade
         super.onActivityCreated(savedInstanceState);
     }
 
+    public void clearHistory() {
+        MyLog.d("clearHistory");
+        ContentResolver contentResolver = getContext().getContentResolver();
+        contentResolver.delete(DbContract.HistoryEntry.CONTENT_URI, null, null);
+    }
+
     // Loader methods
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),
-                DbContract.HistoryEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null);
+        switch (id) {
+            case HISTORY_LOADER:
+                return new CursorLoader(getActivity(), DbContract.HistoryEntry.CONTENT_URI, null, null, null, null);
+            default:
+                return null;
+        }
     }
 
     @Override

@@ -203,8 +203,9 @@ public class MainActivity extends AppCompatActivity implements
     // Fragments control
     private void showMainFragment(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
+            fragment = new MainHistoryFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, new MainHistoryFragment(), "tag" + FRAGMENT_MAIN_HISTORY).commit();
+                    .add(R.id.fragment_container, fragment, "tag" + FRAGMENT_MAIN_HISTORY).commit();
         }
     }
 
@@ -313,7 +314,9 @@ public class MainActivity extends AppCompatActivity implements
         MyLog.d("snackbar_action");
         switch (selectedFragment) {
             case FRAGMENT_MAIN_HISTORY:
-                // TODO Clear history
+                if (fragment instanceof MainHistoryFragment) {
+                    ((MainHistoryFragment) fragment).clearHistory();
+                }
                 break;
         }
     }
