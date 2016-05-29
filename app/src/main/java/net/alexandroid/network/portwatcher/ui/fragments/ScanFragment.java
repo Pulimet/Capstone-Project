@@ -138,7 +138,7 @@ public class ScanFragment extends Fragment implements
                     validatePort();
                     // TODO Add scan code
 
-                    startActivity(new Intent(getActivity(), ResultActivity.class));
+                    //startActivity(new Intent(getActivity(), ResultActivity.class));
                 } else {
                     // TODO Show connection problem message
                 }
@@ -170,6 +170,9 @@ public class ScanFragment extends Fragment implements
 
     @Override
     public void afterTextChanged(Editable s) {
+        if(s.length() > 0) {
+            validatePort();
+        }
     }
     // ---------
 
@@ -271,6 +274,7 @@ public class ScanFragment extends Fragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        MyLog.d("onLoadFinished");
         populateBtns(data);
     }
 

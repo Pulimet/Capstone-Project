@@ -122,7 +122,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:id="@+id/buttonsLayout"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginLeft="-16dp"
+                android:layout_marginRight="-16dp">
 
             </LinearLayout>
 
