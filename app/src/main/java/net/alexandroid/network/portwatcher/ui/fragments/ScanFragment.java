@@ -1,7 +1,6 @@
 package net.alexandroid.network.portwatcher.ui.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,7 +31,8 @@ import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.helpers.Utils;
 import net.alexandroid.network.portwatcher.task.Ping;
 import net.alexandroid.network.portwatcher.ui.activities.MainActivity;
-import net.alexandroid.network.portwatcher.ui.activities.ResultActivity;
+
+import java.util.ArrayList;
 
 
 /**
@@ -54,8 +55,8 @@ public class ScanFragment extends Fragment implements
 
     private int numOfButtons;
 
-    private TextView tvQuery, tvStatus;
-    private ProgressBar progressBar;
+    private TextView tvQuery, tvStatus, tvResult;
+    private ProgressBar pingProgressBar, scanProgressBar;
     private TextInputLayout inputLayoutPort;
     private EditText inputPort;
     private ImageView btnRePing;
@@ -105,7 +106,9 @@ public class ScanFragment extends Fragment implements
     private void setViews(View v) {
         tvQuery = (TextView) v.findViewById(R.id.tvQuery);
         tvStatus = (TextView) v.findViewById(R.id.tvStatus);
-        progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+        tvResult = (TextView) v.findViewById(R.id.tvResult);
+        pingProgressBar = (ProgressBar) v.findViewById(R.id.pingProgressBar);
+        scanProgressBar = (ProgressBar) v.findViewById(R.id.scanProgressBar);
         inputLayoutPort = (TextInputLayout) v.findViewById(R.id.input_layout_port);
         inputPort = (EditText) v.findViewById(R.id.input_port);
         btnRePing = (ImageView) v.findViewById(R.id.btnRePing);
@@ -121,35 +124,58 @@ public class ScanFragment extends Fragment implements
 
     @Override
     public void onClick(View v) {
+        if (!Utils.isNetworkAvailable(getContext().getApplicationContext())) {
+            MyLog.d("connection problem");
+            // TODO Show connection problem message
+            return;
+        }
         switch (v.getId()) {
             case R.id.btnRePing:
-                if (Utils.isNetworkAvailable(getContext().getApplicationContext())) {
-                    tvStatus.setText("");
-                    progressBar.setVisibility(View.VISIBLE);
-                    btnRePing.setVisibility(View.INVISIBLE);
-                    checkAndPing();
-                } else {
-                    // TODO Show connection problem message
-                }
+                tvStatus.setText("");
+                pingProgressBar.setVisibility(View.VISIBLE);
+                btnRePing.setVisibility(View.INVISIBLE);
+                checkAndPing();
                 break;
             case R.id.btnScan:
-                if (Utils.isNetworkAvailable(getContext().getApplicationContext())) {
+                Utils.hideKeyboard(getContext().getApplicationContext(), inputPort);
+                validatePort();
+                String ports = inputPort.getText().toString().trim();
+                MyLog.d("Before check : " + ports);
 
-                    validatePort();
-                    // TODO Add scan code
+                ArrayList<Integer> list = Utils.convertStringToIntegerList(ports);
+                String ports2 = Utils.convertIntegerListToString(list);
+                MyLog.d("After check : " + ports2);
+                inputPort.setText(ports2);
 
-                    //startActivity(new Intent(getActivity(), ResultActivity.class));
-                } else {
-                    // TODO Show connection problem message
-                }
+                startPortScanning(list);
                 break;
+            default:
+                Utils.hideKeyboard(getContext().getApplicationContext(), inputPort);
+                String ports3 = (String) v.getTag();
+                MyLog.d("Before check : " + ports3);
+                ArrayList<Integer> list2 = Utils.convertStringToIntegerList(ports3);
+                String ports4 = Utils.convertIntegerListToString(list2);
+                MyLog.d("After check : " + ports4);
+
+                startPortScanning(list2);
         }
     }
+
+    private void startPortScanning(ArrayList<Integer> pList) {
+        scanProgressBar.setVisibility(View.VISIBLE);
+
+        StringBuilder result = new StringBuilder();
+        for (Integer num : pList) {
+            Utils.appendRedText(result, num);
+        }
+        tvResult.setText(Html.fromHtml(result.toString()));
+    }
+
 
     public void refresh() {
         MyLog.d("refresh");
         tvStatus.setText("");
-        progressBar.setVisibility(View.VISIBLE);
+        pingProgressBar.setVisibility(View.VISIBLE);
         btnRePing.setVisibility(View.INVISIBLE);
         start();
     }
@@ -170,7 +196,7 @@ public class ScanFragment extends Fragment implements
 
     @Override
     public void afterTextChanged(Editable s) {
-        if(s.length() > 0) {
+        if (s.length() > 0) {
             validatePort();
         }
     }
@@ -219,7 +245,7 @@ public class ScanFragment extends Fragment implements
     private Runnable onPingResult = new Runnable() {
         @Override
         public void run() {
-            progressBar.setVisibility(View.GONE);
+            pingProgressBar.setVisibility(View.GONE);
             btnRePing.setVisibility(View.VISIBLE);
             tvStatus.setText(sPingResult ? getString(R.string.success) : getString(R.string.fail));
             tvStatus.setTextColor(sPingResult ? getResources().getColor(R.color.colorAccent) : Color.RED);
@@ -249,6 +275,7 @@ public class ScanFragment extends Fragment implements
         Button btn = (Button) inflater.inflate(R.layout.button, null);
         btn.setText(title);
         btn.setTag(ports);
+        btn.setOnClickListener(this);
         tempLayout.addView(btn);
 
     }
