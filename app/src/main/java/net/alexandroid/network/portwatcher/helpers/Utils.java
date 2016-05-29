@@ -50,4 +50,10 @@ public class Utils {
         }
         return list;
     }
+
+    public static int getDpInPixels(int dpValue) {
+        Context context = Contextor.getInstance().getContext();
+        float d = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * d);
+    }
 }

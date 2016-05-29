@@ -83,13 +83,13 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(ButtonsEntry.COLUMN_TITLE, "8080");
         values.put(ButtonsEntry.COLUMN_PORTS, "8080");
         db.insert(ButtonsEntry.TABLE_NAME, NULL_STR, values);
-        values.put(ButtonsEntry.COLUMN_TITLE, "Geovision DVR/NVR");
+        values.put(ButtonsEntry.COLUMN_TITLE, "GV DVR/NVR");
         values.put(ButtonsEntry.COLUMN_PORTS, "80,4550,5550,6550,5552,8866,5511");
         db.insert(ButtonsEntry.TABLE_NAME, NULL_STR, values);
-        values.put(ButtonsEntry.COLUMN_TITLE, "Geovision CenterV2");
+        values.put(ButtonsEntry.COLUMN_TITLE, "GV CenterV2");
         values.put(ButtonsEntry.COLUMN_PORTS, "5547");
         db.insert(ButtonsEntry.TABLE_NAME, NULL_STR, values);
-        values.put(ButtonsEntry.COLUMN_TITLE, "Geovision IP Device");
+        values.put(ButtonsEntry.COLUMN_TITLE, "GV IP Device");
         values.put(ButtonsEntry.COLUMN_PORTS, "80,5552,10000");
         db.insert(ButtonsEntry.TABLE_NAME, NULL_STR, values);
         values.put(ButtonsEntry.COLUMN_TITLE, "Rifatron");

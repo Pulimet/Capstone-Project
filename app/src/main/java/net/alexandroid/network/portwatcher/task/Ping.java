@@ -19,13 +19,15 @@ public class Ping implements Runnable {
 
     @Override
     public void run() {
-        new Thread(timeOut).start();
 
+        new Thread(timeOut).start();
         boolean result = pingHost(strHost);
         if (mCallBack != null) {
             mCallBack.onResult(strHost, result);
             mCallBack = null;
         }
+
+
     }
 
     private Runnable timeOut = new Runnable() {
