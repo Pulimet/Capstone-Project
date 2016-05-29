@@ -169,6 +169,8 @@ public class ScanFragment extends Fragment implements
             Utils.appendRedText(result, num);
         }
         tvResult.setText(Html.fromHtml(result.toString()));
+
+        // TODO Start scanning service
     }
 
 
