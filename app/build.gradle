@@ -11,12 +11,24 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+    signingConfigs {
+        config {
+            keyAlias 'portwatcher'
+            keyPassword '1qaz@wsx'
+            storeFile file("$rootProject.projectDir/keystore.jks")
+            storePassword '1qaz@wsx'
         }
     }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+    }
+
 }
 
 dependencies {
