@@ -1,6 +1,7 @@
 package net.alexandroid.network.portwatcher.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -29,7 +30,8 @@ import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.helpers.Utils;
-import net.alexandroid.network.portwatcher.task.Ping;
+import net.alexandroid.network.portwatcher.service.ScanService;
+import net.alexandroid.network.portwatcher.task.PingRunnable;
 import net.alexandroid.network.portwatcher.ui.activities.MainActivity;
 
 import java.util.ArrayList;
@@ -170,7 +172,10 @@ public class ScanFragment extends Fragment implements
         }
         tvResult.setText(Html.fromHtml(result.toString()));
 
-        // TODO Start scanning service
+        Intent intent = new Intent(getActivity(), ScanService.class);
+        intent.putExtra(ScanService.EXTRA_HOST, MainActivity.strLastQuery);
+        intent.putIntegerArrayListExtra(ScanService.EXTRA_PORTS, pList);
+        getActivity().startService(intent);
     }
 
 
@@ -229,7 +234,7 @@ public class ScanFragment extends Fragment implements
     // PING
     private void checkAndPing() {
         if (Utils.isNetworkAvailable(getContext().getApplicationContext())) {
-            new Thread(new Ping(MainActivity.strLastQuery, new Ping.CallBack() {
+            new Thread(new PingRunnable(MainActivity.strLastQuery, new PingRunnable.CallBack() {
                 @Override
                 public void onResult(String strHost, boolean pingResult) {
                     sPingResult = pingResult;

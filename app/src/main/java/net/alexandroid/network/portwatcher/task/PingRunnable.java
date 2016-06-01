@@ -5,14 +5,14 @@ import net.alexandroid.network.portwatcher.helpers.MyLog;
 
 import java.io.IOException;
 
-public class Ping implements Runnable {
+public class PingRunnable implements Runnable {
 
     public static final int TIMEOUT = 5000;
 
     private String strHost;
     private CallBack mCallBack;
 
-    public Ping(String pStrHost, CallBack pCallBack) {
+    public PingRunnable(String pStrHost, CallBack pCallBack) {
         strHost = pStrHost;
         mCallBack = pCallBack;
     }
