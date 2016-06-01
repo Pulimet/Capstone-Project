@@ -33,7 +33,7 @@
             android:exported="false"
             android:syncable="true" />
 
-        <service android:name=".service.ScanService" />
+        <service android:name=".services.ScanService" />
 
 
     </application>

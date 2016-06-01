@@ -1,9 +1,6 @@
 package net.alexandroid.network.portwatcher.objects;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ScanItem {
     public static final int INITAL = 0;
     public static final int STARTED = 1;

@@ -1,4 +1,4 @@
-package net.alexandroid.network.portwatcher.service;
+package net.alexandroid.network.portwatcher.services;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,11 +8,15 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.SparseIntArray;
 
+import net.alexandroid.network.portwatcher.events.PortScanFinishEvent;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.objects.HostAndPorts;
 import net.alexandroid.network.portwatcher.task.PortScanManager;
 import net.alexandroid.network.portwatcher.task.ScanResult;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -66,8 +70,8 @@ public class ScanService extends Service {
     // Handler that receives messages from the thread
     private final class ServiceHandler extends Handler implements ScanResult {
         private int serviceId;
-        private int scanCount;
         private int scanTotal;
+        private SparseIntArray scanResults = new SparseIntArray();
 
         public ServiceHandler(Looper looper) {
             super(looper);
@@ -76,27 +80,19 @@ public class ScanService extends Service {
         @Override
         public void handleMessage(Message msg) {
             serviceId = msg.arg1;
-
             HostAndPorts hostAndPorts = (HostAndPorts) msg.obj;
             MyLog.d("TEST host: " + hostAndPorts.getHost());
             scanTotal = hostAndPorts.getPortsList().size();
             for (Integer port : hostAndPorts.getPortsList()) {
                 PortScanManager.startScanTask(hostAndPorts.getHost(), port, this);
             }
-
-
-
         }
 
         @Override
         public void onResult(String host, int port, int state) {
-            scanCount++;
-
-            // TODO Event bus on sing port result
-
-            if (scanCount == scanTotal) {
-                // TODO Event bus on scan of list finished
-                // TODO Show notification if UI unavailable
+            scanResults.put(port, state);
+            EventBus.getDefault().post(new PortScanFinishEvent(host, scanResults, scanResults.size() == scanTotal));
+            if (scanResults.size() == scanTotal) {
                 stopService();
             }
         }

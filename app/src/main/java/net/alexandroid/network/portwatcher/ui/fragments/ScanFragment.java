@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,17 @@ import android.widget.TextView;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
+import net.alexandroid.network.portwatcher.events.PortScanFinishEvent;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.helpers.Utils;
-import net.alexandroid.network.portwatcher.service.ScanService;
+import net.alexandroid.network.portwatcher.services.ScanService;
 import net.alexandroid.network.portwatcher.task.PingRunnable;
+import net.alexandroid.network.portwatcher.task.PortScanRunnable;
 import net.alexandroid.network.portwatcher.ui.activities.MainActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -103,6 +110,14 @@ public class ScanFragment extends Fragment implements
     public void onAttach(Context context) {
         super.onAttach(context);
         getLoaderManager().restartLoader(BUTTONS_LOADER, null, this);
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDetach() {
+        EventBus.getDefault().unregister(this);
+        super.onDetach();
     }
 
     private void setViews(View v) {
@@ -166,16 +181,49 @@ public class ScanFragment extends Fragment implements
     private void startPortScanning(ArrayList<Integer> pList) {
         scanProgressBar.setVisibility(View.VISIBLE);
 
-        StringBuilder result = new StringBuilder();
-        for (Integer num : pList) {
-            Utils.appendRedText(result, num);
-        }
-        tvResult.setText(Html.fromHtml(result.toString()));
+        setResultsRed(pList);
 
         Intent intent = new Intent(getActivity(), ScanService.class);
         intent.putExtra(ScanService.EXTRA_HOST, MainActivity.strLastQuery);
         intent.putIntegerArrayListExtra(ScanService.EXTRA_PORTS, pList);
         getActivity().startService(intent);
+    }
+
+    private void setResultsRed(ArrayList<Integer> pList) {
+        StringBuilder result = new StringBuilder();
+        for (Integer num : pList) {
+            Utils.appendRedText(result, num);
+        }
+        tvResult.setText(Html.fromHtml(result.toString()));
+    }
+
+    // Called in Android UI's main thread
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEachPortScanResult(PortScanFinishEvent event) {
+        if (event.isListScanFinished) {
+            scanProgressBar.setVisibility(View.GONE);
+        }
+
+        if (event.host.equals(MainActivity.strLastQuery)) {
+            setResults(event.scanResults);
+        }
+    }
+
+    private void setResults(SparseIntArray results) {
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < results.size(); i++) {
+            int key = results.keyAt(i);
+            // get the object by the key.
+            int value = results.get(key);
+
+            if (value == PortScanRunnable.OPEN) {
+                Utils.appendGreenText(result, key);
+            } else {
+                Utils.appendRedText(result, key);
+            }
+        }
+        tvResult.setText(Html.fromHtml(result.toString()));
     }
 
 
@@ -316,6 +364,8 @@ public class ScanFragment extends Fragment implements
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
+
 
 
 /*
