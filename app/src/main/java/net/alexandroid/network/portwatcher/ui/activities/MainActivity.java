@@ -206,6 +206,8 @@ public class MainActivity extends AppCompatActivity implements
             fragment = new MainHistoryFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment, "tag" + FRAGMENT_MAIN_HISTORY).commit();
+        } else {
+            fragment = getSupportFragmentManager().findFragmentByTag("tag" + selectedFragment);
         }
     }
 

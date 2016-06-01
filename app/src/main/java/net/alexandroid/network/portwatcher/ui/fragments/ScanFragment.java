@@ -64,6 +64,8 @@ public class ScanFragment extends Fragment implements
 
     private int numOfButtons;
 
+    private String tempLastScanResult;
+
     private TextView tvQuery, tvStatus, tvResult;
     private ProgressBar pingProgressBar, scanProgressBar;
     private TextInputLayout inputLayoutPort;
@@ -89,8 +91,29 @@ public class ScanFragment extends Fragment implements
         setMyParams();
         setViews(view);
         setListeners();
-        start();
+
+        if (savedInstanceState == null) {
+            start();
+        } else {
+            tvQuery.setText(MainActivity.strLastQuery);
+
+            pingProgressBar.setVisibility(View.GONE);
+            btnRePing.setVisibility(View.VISIBLE);
+            tvStatus.setText(sPingResult ? getString(R.string.success) : getString(R.string.fail));
+            tvStatus.setTextColor(sPingResult ? getResources().getColor(R.color.colorAccent) : Color.RED);
+            if (tempLastScanResult != null) {
+                tempLastScanResult = savedInstanceState.getString("tempLastScanResult");
+                tvResult.setText(Html.fromHtml(tempLastScanResult));
+            }
+        }
+
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("tempLastScanResult", tempLastScanResult);
+        super.onSaveInstanceState(outState);
     }
 
     private void setMyParams() {
@@ -102,6 +125,7 @@ public class ScanFragment extends Fragment implements
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        MyLog.d("initLoader (BUTTONS_LOADER)");
         getLoaderManager().initLoader(BUTTONS_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
@@ -119,6 +143,7 @@ public class ScanFragment extends Fragment implements
         EventBus.getDefault().unregister(this);
         super.onDetach();
     }
+
 
     private void setViews(View v) {
         tvQuery = (TextView) v.findViewById(R.id.tvQuery);
@@ -147,34 +172,29 @@ public class ScanFragment extends Fragment implements
             return;
         }
         switch (v.getId()) {
-            case R.id.btnRePing:
+            case R.id.btnRePing: {
                 tvStatus.setText("");
                 pingProgressBar.setVisibility(View.VISIBLE);
                 btnRePing.setVisibility(View.INVISIBLE);
                 checkAndPing();
                 break;
-            case R.id.btnScan:
+            }
+            case R.id.btnScan: {
                 Utils.hideKeyboard(getContext().getApplicationContext(), inputPort);
                 validatePort();
                 String ports = inputPort.getText().toString().trim();
-                MyLog.d("Before check : " + ports);
-
                 ArrayList<Integer> list = Utils.convertStringToIntegerList(ports);
-                String ports2 = Utils.convertIntegerListToString(list);
-                MyLog.d("After check : " + ports2);
-                inputPort.setText(ports2);
-
+                String checkedPorts = Utils.convertIntegerListToString(list);
+                inputPort.setText(checkedPorts);
                 startPortScanning(list);
-                break;
-            default:
+            }
+            break;
+            default: {
                 Utils.hideKeyboard(getContext().getApplicationContext(), inputPort);
-                String ports3 = (String) v.getTag();
-                MyLog.d("Before check : " + ports3);
-                ArrayList<Integer> list2 = Utils.convertStringToIntegerList(ports3);
-                String ports4 = Utils.convertIntegerListToString(list2);
-                MyLog.d("After check : " + ports4);
-
-                startPortScanning(list2);
+                String ports = (String) v.getTag();
+                ArrayList<Integer> list = Utils.convertStringToIntegerList(ports);
+                startPortScanning(list);
+            }
         }
     }
 
@@ -210,12 +230,13 @@ public class ScanFragment extends Fragment implements
     }
 
     private void setResults(SparseIntArray results) {
+
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < results.size(); i++) {
-            int key = results.keyAt(i);
+            int key = results.keyAt(i); // port num
             // get the object by the key.
-            int value = results.get(key);
+            int value = results.get(key); // state of port
 
             if (value == PortScanRunnable.OPEN) {
                 Utils.appendGreenText(result, key);
@@ -223,7 +244,9 @@ public class ScanFragment extends Fragment implements
                 Utils.appendRedText(result, key);
             }
         }
-        tvResult.setText(Html.fromHtml(result.toString()));
+
+        tempLastScanResult = result.toString();
+        tvResult.setText(Html.fromHtml(tempLastScanResult));
     }
 
 
@@ -256,7 +279,6 @@ public class ScanFragment extends Fragment implements
         }
     }
     // ---------
-
 
     private boolean validatePort() {
         // TODO add input format validation
@@ -356,7 +378,7 @@ public class ScanFragment extends Fragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        MyLog.d("onLoadFinished");
+        MyLog.d("onLoadFinished (BUTTONS_LOADER)");
         populateBtns(data);
     }
 
