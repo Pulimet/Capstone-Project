@@ -22,12 +22,14 @@ public class PortScanRunnable implements Runnable {
 
     private String host;
     private int port;
+    private ScanResult mScanResult;
 
     private int state = INIT;
 
-    public PortScanRunnable(String host, int port) {
+    public PortScanRunnable(String host, int port, ScanResult pScanResult) {
         this.host = host;
         this.port = port;
+        this.mScanResult = pScanResult;
     }
 
     @Override
@@ -51,9 +53,7 @@ public class PortScanRunnable implements Runnable {
             MyLog.d("Port is closed, host: " + host + "  port: " + port);
             state = CLOSED;
         }
-    }
 
-    public int getState() {
-        return state;
+        mScanResult.onResult(host, port, state);
     }
 }

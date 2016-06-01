@@ -58,9 +58,9 @@ public class PortScanManager {
     }
 
 
-    public static void startScanTask(String host, int port) {
+    public static void startScanTask(String host, int port, ScanResult mScanResult) {
         // Adds a download task to the thread pool for execution
-        sInstance.mThreadPoolExecutor.execute(new PortScanRunnable(host, port));
+        sInstance.mThreadPoolExecutor.execute(new PortScanRunnable(host, port, mScanResult));
     }
 
     public static PortScanManager getInstance() {
