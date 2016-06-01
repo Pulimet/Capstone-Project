@@ -4,9 +4,11 @@ package net.alexandroid.network.portwatcher.helpers;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.view.View;
+import android.util.SparseIntArray;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import net.alexandroid.network.portwatcher.task.PortScanRunnable;
 
 import java.util.ArrayList;
 
@@ -77,6 +79,29 @@ public class Utils {
         }
 
         return stringBuilder.toString();
+    }
+
+    public static String convertSpareIntArrToPortsString(SparseIntArray scanResults) {
+        ArrayList<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < scanResults.size(); i++) {
+            int key = scanResults.keyAt(i); // port num
+            list.add(key);
+        }
+        return convertIntegerListToString(list);
+    }
+
+    public static String convertSpareIntArrToOpenPortsString(SparseIntArray scanResults) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < scanResults.size(); i++) {
+            int key = scanResults.keyAt(i); // port num
+            // get the object by the key.
+            int value = scanResults.get(key); // state of port
+            if (value == PortScanRunnable.OPEN) {
+                list.add(key);
+            }
+        }
+        return convertIntegerListToString(list);
     }
 
     public static int getDpInPixels(int dpValue) {

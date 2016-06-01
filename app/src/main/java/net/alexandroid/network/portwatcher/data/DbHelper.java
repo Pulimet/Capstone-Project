@@ -59,17 +59,22 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_WATCHLIST_TABLE);
         db.execSQL(SQL_CREATE_SCHEDULE_TABLE);
 
-        addHistoryTest(db);
+        //addHistoryDummy(db);
         addButtons(db);
     }
 
-    private void addHistoryTest(SQLiteDatabase db) {
-        ContentValues values = new ContentValues();
-        values.put(HistoryEntry.COLUMN_HOST, "blabla.com");
-        values.put(HistoryEntry.COLUMN_PORTS, "80,90");
-        values.put(HistoryEntry.COLUMN_WERE_OPEN, "80");
-        values.put(HistoryEntry.COLUMN_DATE_TIME, System.currentTimeMillis());
+    private void addHistoryDummy(SQLiteDatabase db) {
+        ContentValues values = getHistoryContentValues("blabla.com", "80,90", "80", System.currentTimeMillis());
         db.insert(HistoryEntry.TABLE_NAME, NULL_STR, values);
+    }
+
+    public static ContentValues getHistoryContentValues(String host, String ports, String wereOpen, long dateTime) {
+        ContentValues values = new ContentValues();
+        values.put(HistoryEntry.COLUMN_HOST, host);
+        values.put(HistoryEntry.COLUMN_PORTS, ports);
+        values.put(HistoryEntry.COLUMN_WERE_OPEN, wereOpen);
+        values.put(HistoryEntry.COLUMN_DATE_TIME, dateTime);
+        return values;
     }
 
     private void addButtons(SQLiteDatabase db) {

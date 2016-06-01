@@ -1,6 +1,8 @@
 package net.alexandroid.network.portwatcher.services;
 
 import android.app.Service;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -10,8 +12,11 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 
+import net.alexandroid.network.portwatcher.data.DbContract;
+import net.alexandroid.network.portwatcher.data.DbHelper;
 import net.alexandroid.network.portwatcher.events.PortScanFinishEvent;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
+import net.alexandroid.network.portwatcher.helpers.Utils;
 import net.alexandroid.network.portwatcher.objects.HostAndPorts;
 import net.alexandroid.network.portwatcher.task.PortScanManager;
 import net.alexandroid.network.portwatcher.task.ScanResult;
@@ -93,9 +98,25 @@ public class ScanService extends Service {
             scanResults.put(port, state);
             EventBus.getDefault().post(new PortScanFinishEvent(host, scanResults, scanResults.size() == scanTotal));
             if (scanResults.size() == scanTotal) {
+                // TODO If ScanFragment isn't shown show notification
+
+                addResultToHistory(host);
                 stopService();
             }
         }
+
+        private void addResultToHistory(String host) {
+            ContentResolver contentResolver = getApplicationContext().getContentResolver();
+            ContentValues contentValues =
+                    DbHelper.getHistoryContentValues(
+                            host,
+                            Utils.convertSpareIntArrToPortsString(scanResults),
+                            Utils.convertSpareIntArrToOpenPortsString(scanResults),
+                            System.currentTimeMillis());
+            contentResolver.insert(DbContract.HistoryEntry.CONTENT_URI,contentValues);
+        }
+
+
 
         private void stopService() {
             // Stop the service using the startId, so that we don't stop the service in the middle of handling another job
