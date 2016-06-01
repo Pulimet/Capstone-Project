@@ -20,6 +20,7 @@ import net.alexandroid.network.portwatcher.helpers.Utils;
 import net.alexandroid.network.portwatcher.objects.HostAndPorts;
 import net.alexandroid.network.portwatcher.task.PortScanManager;
 import net.alexandroid.network.portwatcher.task.ScanResult;
+import net.alexandroid.network.portwatcher.ui.fragments.ScanFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 
 public class ScanService extends Service {
 
+    public static final String EXTRA_SCAN_ID = "scan_id";
     public static final String EXTRA_HOST = "host";
     public static final String EXTRA_PORTS = "ports";
 
@@ -55,7 +57,8 @@ public class ScanService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        MyLog.d("onStartCommand, startId:" + startId);
+        int scanId = intent.getIntExtra(EXTRA_SCAN_ID, 0);
+        MyLog.d("onStartCommand, startId:" + startId + "   scanId: " + scanId);
 
         String host = intent.getStringExtra(EXTRA_HOST);
         ArrayList<Integer> portsList = intent.getIntegerArrayListExtra(EXTRA_PORTS);
@@ -65,6 +68,7 @@ public class ScanService extends Service {
         // start ID so we know which request we're stopping when we finish the job
         Message msg = mServiceHandler.obtainMessage();
         msg.arg1 = startId;
+        msg.arg2 = scanId;
         msg.obj = hostAndPorts;
         mServiceHandler.sendMessage(msg);
 
@@ -74,6 +78,7 @@ public class ScanService extends Service {
 
     // Handler that receives messages from the thread
     private final class ServiceHandler extends Handler implements ScanResult {
+        private int scanId;
         private int serviceId;
         private int scanTotal;
         private SparseIntArray scanResults = new SparseIntArray();
@@ -85,6 +90,7 @@ public class ScanService extends Service {
         @Override
         public void handleMessage(Message msg) {
             serviceId = msg.arg1;
+            scanId = msg.arg2;
             HostAndPorts hostAndPorts = (HostAndPorts) msg.obj;
             MyLog.d("TEST host: " + hostAndPorts.getHost());
             scanTotal = hostAndPorts.getPortsList().size();
@@ -96,9 +102,11 @@ public class ScanService extends Service {
         @Override
         public void onResult(String host, int port, int state) {
             scanResults.put(port, state);
-            EventBus.getDefault().post(new PortScanFinishEvent(host, scanResults, scanResults.size() == scanTotal));
+            if (scanId == ScanFragment.sScanId) {
+                EventBus.getDefault().post(new PortScanFinishEvent(host, scanResults, scanResults.size() == scanTotal));
+            }
             if (scanResults.size() == scanTotal) {
-                // TODO If ScanFragment isn't shown show notification
+                // TODO If ScanFragment isn't shown or if  scanId != ScanFragment.sScanId show notification
 
                 addResultToHistory(host);
                 stopService();
@@ -106,6 +114,7 @@ public class ScanService extends Service {
         }
 
         private void addResultToHistory(String host) {
+            MyLog.d("addResultToHistory, scanId: " + scanId);
             ContentResolver contentResolver = getApplicationContext().getContentResolver();
             ContentValues contentValues =
                     DbHelper.getHistoryContentValues(
@@ -113,9 +122,8 @@ public class ScanService extends Service {
                             Utils.convertSpareIntArrToPortsString(scanResults),
                             Utils.convertSpareIntArrToOpenPortsString(scanResults),
                             System.currentTimeMillis());
-            contentResolver.insert(DbContract.HistoryEntry.CONTENT_URI,contentValues);
+            contentResolver.insert(DbContract.HistoryEntry.CONTENT_URI, contentValues);
         }
-
 
 
         private void stopService() {

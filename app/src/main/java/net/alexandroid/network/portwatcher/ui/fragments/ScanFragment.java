@@ -55,6 +55,8 @@ public class ScanFragment extends Fragment implements
         View.OnClickListener,
         TextWatcher {
 
+    public static int sScanId;
+
     public static final int COL_ID = 0;
     public static final int COL_TITLE = 1;
     public static final int COL_PORTS = 2;
@@ -93,6 +95,7 @@ public class ScanFragment extends Fragment implements
         setListeners();
 
         if (savedInstanceState == null) {
+            sScanId++;
             start();
         } else {
             tvQuery.setText(MainActivity.strLastQuery);
@@ -203,8 +206,11 @@ public class ScanFragment extends Fragment implements
 
         setResultsRed(pList);
 
+        sScanId++;
+
         Intent intent = new Intent(getActivity(), ScanService.class);
         intent.putExtra(ScanService.EXTRA_HOST, MainActivity.strLastQuery);
+        intent.putExtra(ScanService.EXTRA_SCAN_ID, sScanId);
         intent.putIntegerArrayListExtra(ScanService.EXTRA_PORTS, pList);
         getActivity().startService(intent);
     }
