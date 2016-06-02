@@ -329,6 +329,10 @@ public class MainActivity extends AppCompatActivity implements
     public void onItemClick(ScanItem item) {
         MyLog.d("onItemClick");
         // TODO Show dialog window with scan results and option to rescan
+
+        Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+        intent.putExtra(ResultActivity.EXTRA_SCAN_ITEM, item);
+        startActivity(intent);
     }
 
     @Override

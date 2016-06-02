@@ -1,18 +1,15 @@
 package net.alexandroid.network.portwatcher.objects;
 
 
-public class ScanItem {
-    public static final int INITAL = 0;
-    public static final int STARTED = 1;
-    public static final int FINISHED = 2;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    private int scanStatus;
+public class ScanItem implements Parcelable {
 
     // systemTime, strDateTime - When scan finished
     private long systemTime;
     private String strHost, strPorts, strDateTime, strWereOpen;
 
-    // Dummy adapter
     public ScanItem(String pStrHost, String pStrPorts, String pStrDateTime, String pStrWereOpen) {
         strHost = pStrHost;
         strPorts = pStrPorts;
@@ -44,14 +41,6 @@ public class ScanItem {
         strDateTime = pStrDateTime;
     }
 
-    public int getScanStatus() {
-        return scanStatus;
-    }
-
-    public void setScanStatus(int pScanStatus) {
-        scanStatus = pScanStatus;
-    }
-
     public long getSystemTime() {
         return systemTime;
     }
@@ -60,7 +49,6 @@ public class ScanItem {
         systemTime = System.currentTimeMillis();
     }
 
-
     public String getStrWereOpen() {
         return strWereOpen;
     }
@@ -68,4 +56,39 @@ public class ScanItem {
     public void setStrWereOpen(String pStrWereOpen) {
         strWereOpen = pStrWereOpen;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.systemTime);
+        dest.writeString(this.strHost);
+        dest.writeString(this.strPorts);
+        dest.writeString(this.strDateTime);
+        dest.writeString(this.strWereOpen);
+    }
+
+    protected ScanItem(Parcel in) {
+        this.systemTime = in.readLong();
+        this.strHost = in.readString();
+        this.strPorts = in.readString();
+        this.strDateTime = in.readString();
+        this.strWereOpen = in.readString();
+    }
+
+    public static final Parcelable.Creator<ScanItem> CREATOR = new Parcelable.Creator<ScanItem>() {
+        @Override
+        public ScanItem createFromParcel(Parcel source) {
+            return new ScanItem(source);
+        }
+
+        @Override
+        public ScanItem[] newArray(int size) {
+            return new ScanItem[size];
+        }
+    };
 }
