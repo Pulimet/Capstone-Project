@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingEnd="0dp"
+    android:paddingStart="16dp">
+
+
+    <TextView
+        android:id="@+id/ttitleHost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="@string/host2"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/secondary_text"
+        android:textSize="12sp" />
+
+
+    <TextView
+        android:id="@+id/titlePorts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ttitleHost"
+        android:layout_marginTop="8dp"
+        android:text="@string/ports"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/secondary_text"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/titleWhen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titlePorts"
+        android:layout_marginTop="8dp"
+        android:text="@string/when"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/secondary_text"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvPorts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/titlePorts"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tool:text="80"
+        android:layout_toEndOf="@id/titlePorts"
+        android:layout_marginLeft="16dp" />
+
+    <TextView
+        android:id="@+id/tvWhen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/titleWhen"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tool:text="25/02/1987 19:00"
+        android:layout_toEndOf="@id/titlePorts"
+        android:layout_marginLeft="16dp" />
+
+
+    <TextView
+        android:id="@+id/tvIp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tool:text="192.168.0.1"
+        android:layout_alignBaseline="@+id/ttitleHost"
+        android:layout_toEndOf="@id/titlePorts"
+        android:layout_marginLeft="16dp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/desc_add_to_watchlist"
+            android:paddingBottom="10dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/ic_menu_star" />
+
+        <ImageView
+            android:id="@+id/imgShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/desc_share_scan_result"
+            android:paddingBottom="10dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/ic_menu_share" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

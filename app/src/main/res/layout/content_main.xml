@@ -7,4 +7,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:layout="@layout/main_fragment_item_list"/>
+    tools:layout="@layout/item_list_main_fragment"/>

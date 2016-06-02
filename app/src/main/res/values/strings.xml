@@ -12,9 +12,9 @@
     <string name="clear">Clear</string>
 
     <!--MainActivity # MainFragment (History)-->
-    <string name="host2">Host:</string>
-    <string name="ports">Ports:</string>
-    <string name="when">When:</string>
+    <string name="host2">HOST:</string>
+    <string name="ports">PORTS:</string>
+    <string name="when">WHEN:</string>
     <string name="desc_add_to_watchlist">Add to watchlist</string>
     <string name="desc_share_scan_result">Share scan result</string>
     <string name="history_is_empty">History is empty</string>

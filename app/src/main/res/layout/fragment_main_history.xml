@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.fragments.MainHistoryFragment"
-        tools:listitem="@layout/main_fragment_item_list"/>
+        tools:listitem="@layout/item_list_main_fragment"/>
 
     <TextView
         android:id="@+id/empty"
