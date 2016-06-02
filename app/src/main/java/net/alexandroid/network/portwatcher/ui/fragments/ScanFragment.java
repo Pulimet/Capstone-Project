@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -147,7 +148,6 @@ public class ScanFragment extends Fragment implements
         super.onDetach();
     }
 
-
     private void setViews(View v) {
         tvQuery = (TextView) v.findViewById(R.id.tvQuery);
         tvStatus = (TextView) v.findViewById(R.id.tvStatus);
@@ -171,7 +171,7 @@ public class ScanFragment extends Fragment implements
     public void onClick(View v) {
         if (!Utils.isNetworkAvailable(getContext().getApplicationContext())) {
             MyLog.d("connection problem");
-            // TODO Show connection problem message
+            Snackbar.make(v, R.string.network_not_available, Snackbar.LENGTH_SHORT).show();
             return;
         }
         switch (v.getId()) {
@@ -203,11 +203,12 @@ public class ScanFragment extends Fragment implements
 
     private void startPortScanning(ArrayList<Integer> pList) {
         scanProgressBar.setVisibility(View.VISIBLE);
-
         setResultsRed(pList);
-
         sScanId++;
+        startScanningService(pList);
+    }
 
+    private void startScanningService(ArrayList<Integer> pList) {
         Intent intent = new Intent(getActivity(), ScanService.class);
         intent.putExtra(ScanService.EXTRA_HOST, MainActivity.strLastQuery);
         intent.putExtra(ScanService.EXTRA_SCAN_ID, sScanId);
@@ -321,7 +322,7 @@ public class ScanFragment extends Fragment implements
             })).start();
         } else {
             MyLog.d("Network not available");
-            // TODO Show message: network connection problem
+            Snackbar.make(tvQuery, R.string.network_not_available, Snackbar.LENGTH_SHORT).show();
         }
     }
 

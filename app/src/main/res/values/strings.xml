@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Port Watcher</string>
 
+    <!--Error messages-->
+    <string name="network_not_available">Network not available</string>
+
     <!--Content Provider-->
     <string name="content_authority">net.alexandroid.network.portwatcher</string>
 
@@ -52,7 +55,8 @@
     <!--ResultActivity - Dialog-->
     <string name="desc_exit_dialog">Exit dialog</string>
     <string name="rescan">Rescan</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
+    <string name="rescan2">Rescan…</string>
 
 
 

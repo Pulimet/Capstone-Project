@@ -328,8 +328,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onItemClick(ScanItem item) {
         MyLog.d("onItemClick");
-        // TODO Show dialog window with scan results and option to rescan
-
         Intent intent = new Intent(MainActivity.this, ResultActivity.class);
         intent.putExtra(ResultActivity.EXTRA_SCAN_ITEM, item);
         startActivity(intent);
@@ -337,13 +335,15 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onStarClick(ScanItem item) {
-        // TODO Add Scan to watchlist
         MyLog.d("onStarClick");
+        // TODO Add Scan to watchlist
+        //Snackbar.make(tvQuery, R.string.network_not_available, Snackbar.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onShareClick(ScanItem item) {
-        // TODO Share results of scan
         MyLog.d("onShareClick");
+        // TODO Share results of scan
     }
 }
