@@ -10,7 +10,10 @@ import android.widget.EditText;
 
 import net.alexandroid.network.portwatcher.task.PortScanRunnable;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class Utils {
 
@@ -127,5 +130,12 @@ public class Utils {
         pResult.append("<font color=#4CAF50>");
         pResult.append(num);
         pResult.append("</font> ");
+    }
+
+    public static String convertTimeFormMs(String str) {
+        long dateTime = Long.valueOf(str);
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy  HH:mm", Locale.getDefault());
+        Date resultDate = new Date(dateTime);
+        return sdf.format(resultDate);
     }
 }

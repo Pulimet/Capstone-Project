@@ -36,7 +36,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
 
     @SuppressWarnings("ConstantConditions")
     private void setViews() {
-        ((TextView) findViewById(R.id.tvWhen)).setText(mScanItem.getStrDateTime());
+        ((TextView) findViewById(R.id.tvWhen)).setText(Utils.convertTimeFormMs(mScanItem.getStrDateTime()));
         ((TextView) findViewById(R.id.tvQuery)).setText(mScanItem.getStrHost());
         tvResults = (TextView) findViewById(R.id.tvResult);
     }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.alexandroid.network.portwatcher.R;
+import net.alexandroid.network.portwatcher.helpers.Utils;
 import net.alexandroid.network.portwatcher.objects.ScanItem;
 import net.alexandroid.network.portwatcher.ui.fragments.MainHistoryFragment;
 
@@ -35,7 +36,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
 
         holder.tvHost.setText(mCursor.getString(MainHistoryFragment.COL_HOST));
         holder.tvPorts.setText(mCursor.getString(MainHistoryFragment.COL_PORTS));
-        holder.tvWhen.setText(mCursor.getString(MainHistoryFragment.COL_WHEN));
+        holder.tvWhen.setText(Utils.convertTimeFormMs(mCursor.getString(MainHistoryFragment.COL_WHEN)));
 
         holder.itemView.setOnClickListener(this);
         holder.itemView.setTag(position);

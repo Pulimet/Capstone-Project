@@ -104,7 +104,8 @@ public class MainHistoryFragment extends Fragment implements LoaderManager.Loade
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case HISTORY_LOADER:
-                return new CursorLoader(getActivity(), DbContract.HistoryEntry.CONTENT_URI, null, null, null, null);
+                return new CursorLoader(getActivity(),
+                        DbContract.HistoryEntry.CONTENT_URI, null, null, null, DbContract.HistoryEntry._ID + " DESC");
             default:
                 return null;
         }
