@@ -1,6 +1,7 @@
 package net.alexandroid.network.portwatcher.ui.adapters;
 
 import android.database.Cursor;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,6 @@ import android.widget.TextView;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.helpers.Utils;
-import net.alexandroid.network.portwatcher.objects.ScanItem;
 import net.alexandroid.network.portwatcher.ui.fragments.MainHistoryFragment;
 import net.alexandroid.network.portwatcher.ui.fragments.WatchFragment;
 
@@ -50,6 +50,7 @@ public class WatchRecyclerAdapter extends RecyclerView.Adapter<WatchRecyclerAdap
         String ports = mCursor.getString(WatchFragment.COL_PORTS);
 
         mListener.onStartScan(Utils.convertStringToIntegerList(ports), host, -1);
+        Snackbar.make(v, R.string.scanning, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

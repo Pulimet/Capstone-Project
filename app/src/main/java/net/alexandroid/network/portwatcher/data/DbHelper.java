@@ -59,6 +59,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_SCHEDULE_TABLE);
 
         //addHistoryDummy(db);
+        addWatchListDummy(db);
         addButtons(db);
     }
 
@@ -67,12 +68,24 @@ public class DbHelper extends SQLiteOpenHelper {
         db.insert(HistoryEntry.TABLE_NAME, NULL_STR, values);
     }
 
+    private void addWatchListDummy(SQLiteDatabase db) {
+        ContentValues values = getWatchlistContentValues("alexandroid.net", "80,90");
+        db.insert(WatchlistEntry.TABLE_NAME, NULL_STR, values);
+    }
+
     public static ContentValues getHistoryContentValues(String host, String ports, String wereOpen, long dateTime) {
         ContentValues values = new ContentValues();
         values.put(HistoryEntry.COLUMN_HOST, host);
         values.put(HistoryEntry.COLUMN_PORTS, ports);
         values.put(HistoryEntry.COLUMN_WERE_OPEN, wereOpen);
         values.put(HistoryEntry.COLUMN_DATE_TIME, dateTime);
+        return values;
+    }
+
+    public static ContentValues getWatchlistContentValues(String host, String ports) {
+        ContentValues values = new ContentValues();
+        values.put(WatchlistEntry.COLUMN_HOST, host);
+        values.put(WatchlistEntry.COLUMN_PORTS, ports);
         return values;
     }
 

@@ -68,6 +68,9 @@
     <string name="open">"Open: "</string>
     <string name="closed">"\n Closed: "</string>
 
+    <!--MainActivity # WatchFragment-->
+    <string name="wathclist_is_empty">Watchlist is empty</string>
+    <string name="scanning">Scanning…</string>
 
 
 </resources>
