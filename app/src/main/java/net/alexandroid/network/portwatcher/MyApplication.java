@@ -8,6 +8,8 @@ import net.alexandroid.network.portwatcher.helpers.Debug;
 
 public class MyApplication extends Application {
 
+    private static boolean isScanFragmentVisible;
+
     // ----- LOGS ------------------------------------ 
     public static final boolean SHOW_LOGS = true;
     public static final boolean SHOW_COUNTER_LOGS = true;
@@ -25,4 +27,11 @@ public class MyApplication extends Application {
         return Contextor.getInstance().getContext().getPackageName();
     }
 
-} 
+    public static boolean isScanFragmentVisible() {
+        return isScanFragmentVisible;
+    }
+
+    public static void setScanFragmentVisible(boolean pScanFragmentVisible) {
+        isScanFragmentVisible = pScanFragmentVisible;
+    }
+}

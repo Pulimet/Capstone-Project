@@ -1,5 +1,7 @@
 package net.alexandroid.network.portwatcher.services;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -10,16 +12,22 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.NotificationCompat;
 import android.util.SparseIntArray;
 
+import net.alexandroid.network.portwatcher.MyApplication;
+import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
 import net.alexandroid.network.portwatcher.data.DbHelper;
 import net.alexandroid.network.portwatcher.events.PortScanFinishEvent;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.helpers.Utils;
 import net.alexandroid.network.portwatcher.objects.HostAndPorts;
+import net.alexandroid.network.portwatcher.objects.ScanItem;
 import net.alexandroid.network.portwatcher.task.PortScanManager;
 import net.alexandroid.network.portwatcher.task.ScanResult;
+import net.alexandroid.network.portwatcher.ui.activities.ResultActivity;
 import net.alexandroid.network.portwatcher.ui.fragments.ScanFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -106,11 +114,70 @@ public class ScanService extends Service {
                 EventBus.getDefault().post(new PortScanFinishEvent(host, scanResults, scanResults.size() == scanTotal));
             }
             if (scanResults.size() == scanTotal) {
-                // TODO If ScanFragment isn't shown or if  scanId != ScanFragment.sScanId show notification
+
+                if (!MyApplication.isScanFragmentVisible() || scanId != ScanFragment.sScanId) {
+                    showNotification(host);
+                }
 
                 addResultToHistory(host);
                 stopService();
             }
+        }
+
+        private void showNotification(String host) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
+            builder.setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle(getString(R.string.scan_results) + " " + host);
+
+            StringBuilder strText = new StringBuilder();
+            String openPorts = Utils.convertSpareIntArrToOpenPortsString(scanResults);
+            if (openPorts.length() > 0) {
+                strText.append(getString(R.string.open));
+                strText.append(openPorts);
+            }
+            String closedPorts = Utils.convertSpareIntArrToClosePortsString(scanResults);
+            if (closedPorts.length() > 0) {
+                strText.append(getString(R.string.closed));
+                strText.append(closedPorts);
+            }
+            builder.setContentText(strText.toString());
+
+            builder.setAutoCancel(true);
+
+            builder.setStyle(new NotificationCompat.BigTextStyle());
+
+            //builder.setLargeIcon(bitmap);
+
+            // Android 5+
+            //builder.setColor(context.getResources().getColor(R.color.colorPrimaryDark));
+
+
+            // MAIN INTENT
+            builder.setContentIntent(getShowResultsPendingIntent(host));
+
+            //builder.addAction(new NotificationCompat.Action(R.drawable.ic_menu_edit, "TEST", pendingIntentForAction));
+
+
+            Notification notification = builder.build();
+            NotificationManagerCompat.from(getApplicationContext()).notify(scanId, notification);
+        }
+
+        private PendingIntent getShowResultsPendingIntent(String host) {
+            ScanItem scanItem = new ScanItem(
+                    host,
+                    Utils.convertSpareIntArrToPortsString(scanResults),
+                    String.valueOf(System.currentTimeMillis()),
+                    Utils.convertSpareIntArrToOpenPortsString(scanResults)
+            );
+
+            Intent intentShowResults = new Intent(ScanService.this, ResultActivity.class);
+            intentShowResults.putExtra(ResultActivity.EXTRA_SCAN_ITEM, scanItem);
+            return PendingIntent.getActivity(
+                    ScanService.this,
+                    0,
+                    intentShowResults,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
         }
 
         private void addResultToHistory(String host) {

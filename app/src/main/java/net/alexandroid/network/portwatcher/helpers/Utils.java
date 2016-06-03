@@ -107,6 +107,19 @@ public class Utils {
         return convertIntegerListToString(list);
     }
 
+    public static String convertSpareIntArrToClosePortsString(SparseIntArray scanResults) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < scanResults.size(); i++) {
+            int key = scanResults.keyAt(i); // port num
+            // get the object by the key.
+            int value = scanResults.get(key); // state of port
+            if (value != PortScanRunnable.OPEN) {
+                list.add(key);
+            }
+        }
+        return convertIntegerListToString(list);
+    }
+
     public static int getDpInPixels(int dpValue) {
         Context context = Contextor.getInstance().getContext();
         float d = context.getResources().getDisplayMetrics().density;

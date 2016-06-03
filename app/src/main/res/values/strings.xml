@@ -58,6 +58,10 @@
     <string name="ok">OK</string>
     <string name="rescan2">Rescan…</string>
 
+    <!--Notification-->
+    <string name="scan_results">Scan results:</string>
+    <string name="open">"Open: "</string>
+    <string name="closed">"\n Closed: "</string>
 
 
 </resources>

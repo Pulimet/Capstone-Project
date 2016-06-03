@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import net.alexandroid.network.portwatcher.MyApplication;
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
 import net.alexandroid.network.portwatcher.events.PortScanFinishEvent;
@@ -138,7 +139,6 @@ public class ScanFragment extends Fragment implements
     public void onAttach(Context context) {
         super.onAttach(context);
         getLoaderManager().restartLoader(BUTTONS_LOADER, null, this);
-
         EventBus.getDefault().register(this);
     }
 
@@ -146,6 +146,20 @@ public class ScanFragment extends Fragment implements
     public void onDetach() {
         EventBus.getDefault().unregister(this);
         super.onDetach();
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        MyApplication.setScanFragmentVisible(true);
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        MyApplication.setScanFragmentVisible(false);
     }
 
     private void setViews(View v) {
@@ -202,6 +216,9 @@ public class ScanFragment extends Fragment implements
     }
 
     private void startPortScanning(ArrayList<Integer> pList) {
+        if (pList.size() == 0) {
+            return;
+        }
         scanProgressBar.setVisibility(View.VISIBLE);
         setResultsRed(pList);
         sScanId++;
@@ -287,7 +304,6 @@ public class ScanFragment extends Fragment implements
         tempLastScanResult = result.toString();
         tvResult.setText(Html.fromHtml(tempLastScanResult));
     }
-
 
     public void refresh() {
         MyLog.d("refresh");
