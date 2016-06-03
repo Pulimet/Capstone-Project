@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements
                 mToolbar.setSubtitle(R.string.schedule);
                 break;
             case R.id.nav_share:
-                actionShare();
+                actionShareApp();
                 break;
             case R.id.nav_rate:
                 actionRate();
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(marketIntent);
     }
 
-    private void actionShare() {
+    private void actionShareApp() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         String appPackageName = getPackageName();
@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, getString(R.string.share)));
     }
+
 
     // Fragments control
     private void showMainFragment(Bundle savedInstanceState) {
@@ -344,6 +345,19 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onShareClick(ScanItem item) {
         MyLog.d("onShareClick");
-        // TODO Share results of scan
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+
+        StringBuilder str = new StringBuilder();
+        str.append(getString(R.string.share1));
+        str.append(item.getStrHost());
+        str.append(getString(R.string.share2));
+        str.append(item.getStrWereOpen());
+        str.append(getString(R.string.share3));
+        str.append(item.getStrPorts());
+        str.append(getString(R.string.share4));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, str.toString());
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, getString(R.string.share)));
     }
 }
