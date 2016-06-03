@@ -59,7 +59,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_SCHEDULE_TABLE);
 
         //addHistoryDummy(db);
-        addWatchListDummy(db);
+        //addWatchListDummy(db);
         addButtons(db);
     }
 

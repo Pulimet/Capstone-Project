@@ -70,7 +70,7 @@ public class WatchFragment extends Fragment implements LoaderManager.LoaderCallb
             mListener = (WatchFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement WatchFragmentInteractionListener");
         }
     }
 

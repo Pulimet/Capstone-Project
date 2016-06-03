@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
         MainHistoryFragment.MainFragmentInteractionListener,
         ScanFragment.ScanFragmentInteractionListener,
-        WatchFragment.WatchFragmentInteractionListener {
+        WatchFragment.WatchFragmentInteractionListener,
+        EditFragment.EditFragmentInteractionListener {
 
     public static final int FRAGMENT_MAIN_HISTORY = 0;
     public static final int FRAGMENT_SCAN = 1;
@@ -385,5 +386,9 @@ public class MainActivity extends AppCompatActivity implements
 
     // Watchlist fragment callbacks
 
+    // EditFragment callbacks
+    @Override
+    public void onEditItemClick(String title, String ports) {
 
+    }
 }

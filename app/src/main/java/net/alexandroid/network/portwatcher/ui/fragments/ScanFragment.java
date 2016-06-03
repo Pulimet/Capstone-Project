@@ -50,7 +50,7 @@ import java.util.ArrayList;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@lin OnListOfMainFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link ScanFragmentInteractionListener}
  * interface.
  */
 public class ScanFragment extends Fragment implements
@@ -146,7 +146,7 @@ public class ScanFragment extends Fragment implements
             mListener = (ScanFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement ScanFragmentInteractionListener");
         }
     }
 
