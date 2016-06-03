@@ -34,6 +34,7 @@ import net.alexandroid.network.portwatcher.data.DbContract;
 import net.alexandroid.network.portwatcher.events.PortScanFinishEvent;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.helpers.Utils;
+import net.alexandroid.network.portwatcher.objects.ScanItem;
 import net.alexandroid.network.portwatcher.services.ScanService;
 import net.alexandroid.network.portwatcher.task.PingRunnable;
 import net.alexandroid.network.portwatcher.task.PortScanRunnable;
@@ -79,7 +80,7 @@ public class ScanFragment extends Fragment implements
     private LinearLayout btnsLayout, tempLayout;
 
     private LinearLayout.LayoutParams btnParams, layuotParams;
-    //private OnListOfMainFragmentInteractionListener mListener;
+    private ScanFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -140,14 +141,21 @@ public class ScanFragment extends Fragment implements
         super.onAttach(context);
         getLoaderManager().restartLoader(BUTTONS_LOADER, null, this);
         EventBus.getDefault().register(this);
+
+        if (context instanceof ScanFragmentInteractionListener) {
+            mListener = (ScanFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         EventBus.getDefault().unregister(this);
+        mListener = null;
         super.onDetach();
     }
-
 
     @Override
     public void onStart() {
@@ -222,16 +230,10 @@ public class ScanFragment extends Fragment implements
         scanProgressBar.setVisibility(View.VISIBLE);
         setResultsRed(pList);
         sScanId++;
-        startScanningService(pList);
+        mListener.onStartScan(pList, MainActivity.strLastQuery, sScanId);
     }
 
-    private void startScanningService(ArrayList<Integer> pList) {
-        Intent intent = new Intent(getActivity(), ScanService.class);
-        intent.putExtra(ScanService.EXTRA_HOST, MainActivity.strLastQuery);
-        intent.putExtra(ScanService.EXTRA_SCAN_ID, sScanId);
-        intent.putIntegerArrayListExtra(ScanService.EXTRA_PORTS, pList);
-        getActivity().startService(intent);
-    }
+
 
     private void setResultsRed(ArrayList<Integer> pList) {
         StringBuilder result = new StringBuilder();
@@ -405,6 +407,7 @@ public class ScanFragment extends Fragment implements
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         Button btn = (Button) inflater.inflate(R.layout.button, null);
+        btn.setLayoutParams(btnParams);
         btn.setText(title);
         btn.setTag(ports);
         btn.setOnClickListener(this);
@@ -445,31 +448,17 @@ public class ScanFragment extends Fragment implements
 
 
 
-/*
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListOfMainFragmentInteractionListener) {
-            mListener = (OnListOfMainFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    *//**
+    /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     *//*
-    public interface OnListOfMainFragmentInteractionListener {
-        void onItemClick(ScanItem item);
-    }*/
+     */
+
+
+    public interface ScanFragmentInteractionListener {
+        void onStartScan(ArrayList<Integer> pList, String host, int scanId);
+    }
+
+
 }

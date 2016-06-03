@@ -39,7 +39,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_WATCHLIST_TABLE = "CREATE TABLE " + WatchlistEntry.TABLE_NAME + " (" +
                 WatchlistEntry._ID + " INTEGER PRIMARY KEY," +
-                WatchlistEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 WatchlistEntry.COLUMN_HOST + " TEXT NOT NULL, " +
                 WatchlistEntry.COLUMN_PORTS + " TEXT NOT NULL " +
                 " );";

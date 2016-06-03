@@ -26,7 +26,7 @@ import net.alexandroid.network.portwatcher.ui.adapters.decorators.SimpleDividerI
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListOfMainFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link MainFragmentInteractionListener}
  * interface.
  */
 public class MainHistoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -41,7 +41,7 @@ public class MainHistoryFragment extends Fragment implements LoaderManager.Loade
     public static final int COL_WHEN = 4;
 
 
-    private OnListOfMainFragmentInteractionListener mListener;
+    private MainFragmentInteractionListener mListener;
     private MainRecyclerAdapter mAdapter;
 
     /**
@@ -72,8 +72,8 @@ public class MainHistoryFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListOfMainFragmentInteractionListener) {
-            mListener = (OnListOfMainFragmentInteractionListener) context;
+        if (context instanceof MainFragmentInteractionListener) {
+            mListener = (MainFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -130,7 +130,7 @@ public class MainHistoryFragment extends Fragment implements LoaderManager.Loade
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnListOfMainFragmentInteractionListener {
+    public interface MainFragmentInteractionListener {
         void onItemClick(ScanItem item);
 
         void onStarClick(ScanItem item);

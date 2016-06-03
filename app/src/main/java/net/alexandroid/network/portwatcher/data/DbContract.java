@@ -73,7 +73,6 @@ public class DbContract {
 
         public static final String TABLE_NAME = "watchlist";
 
-        public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_HOST = "host";
         public static final String COLUMN_PORTS = "ports";
 

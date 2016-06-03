@@ -23,17 +23,22 @@ import android.view.View;
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.objects.ScanItem;
+import net.alexandroid.network.portwatcher.services.ScanService;
 import net.alexandroid.network.portwatcher.ui.fragments.EditFragment;
 import net.alexandroid.network.portwatcher.ui.fragments.MainHistoryFragment;
 import net.alexandroid.network.portwatcher.ui.fragments.ScanFragment;
 import net.alexandroid.network.portwatcher.ui.fragments.ScheduleFragment;
 import net.alexandroid.network.portwatcher.ui.fragments.WatchFragment;
 
+import java.util.ArrayList;
+
 @SuppressWarnings("ConstantConditions")
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         View.OnClickListener,
-        MainHistoryFragment.OnListOfMainFragmentInteractionListener {
+        MainHistoryFragment.MainFragmentInteractionListener,
+        ScanFragment.ScanFragmentInteractionListener,
+        WatchFragment.WatchFragmentInteractionListener {
 
     public static final int FRAGMENT_MAIN_HISTORY = 0;
     public static final int FRAGMENT_SCAN = 1;
@@ -357,4 +362,20 @@ public class MainActivity extends AppCompatActivity implements
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, getString(R.string.share)));
     }
+
+
+    // ScanFragment and Watchlist callback
+
+    @Override
+    public void onStartScan(ArrayList<Integer> pList, String host, int scanId) {
+        Intent intent = new Intent(MainActivity.this, ScanService.class);
+        intent.putExtra(ScanService.EXTRA_HOST, host);
+        intent.putExtra(ScanService.EXTRA_SCAN_ID, scanId);
+        intent.putIntegerArrayListExtra(ScanService.EXTRA_PORTS, pList);
+        startService(intent);
+    }
+
+    // Watchlist fragment callbacks
+
+
 }
