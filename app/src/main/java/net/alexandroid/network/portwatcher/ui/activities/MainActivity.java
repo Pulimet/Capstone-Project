@@ -1,5 +1,7 @@
 package net.alexandroid.network.portwatcher.ui.activities;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -21,6 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import net.alexandroid.network.portwatcher.R;
+import net.alexandroid.network.portwatcher.data.DbContract;
+import net.alexandroid.network.portwatcher.data.DbHelper;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.objects.ScanItem;
 import net.alexandroid.network.portwatcher.services.ScanService;
@@ -336,9 +340,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onStarClick(ScanItem item) {
         MyLog.d("onStarClick");
-        // TODO Add Scan to watchlist
-        //Snackbar.make(tvQuery, R.string.network_not_available, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mSearchView, R.string.added_ro_watchlist, Snackbar.LENGTH_SHORT).show();
+        MyLog.d("Add item to watchlist, host: " + item.getStrHost());
 
+        ContentResolver contentResolver = getApplicationContext().getContentResolver();
+        ContentValues contentValues =
+                DbHelper.getWatchlistContentValues(item.getStrHost(), item.getStrPorts());
+        contentResolver.insert(DbContract.WatchlistEntry.CONTENT_URI, contentValues);
     }
 
     @Override

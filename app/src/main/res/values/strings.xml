@@ -24,6 +24,8 @@
     <string name="share3">"\nScanned ports: "</string>
     <string name="share4">\n\nScanned with Port Watcher App.</string>
 
+    <string name="added_ro_watchlist">Added to watchlist</string>
+
     <!--MainActivity menu-->
     <string name="action_settings">Settings</string>
     <string name="hint_search_view">google.com/10.0.0.1</string>
@@ -71,6 +73,7 @@
     <!--MainActivity # WatchFragment-->
     <string name="wathclist_is_empty">Watchlist is empty</string>
     <string name="scanning">Scanning…</string>
+
 
 
 </resources>

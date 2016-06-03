@@ -6,6 +6,8 @@ import android.app.Service;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -141,16 +143,14 @@ public class ScanService extends Service {
                 strText.append(closedPorts);
             }
             builder.setContentText(strText.toString());
-
             builder.setAutoCancel(true);
-
+            builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
             builder.setStyle(new NotificationCompat.BigTextStyle());
 
             //builder.setLargeIcon(bitmap);
 
             // Android 5+
             //builder.setColor(context.getResources().getColor(R.color.colorPrimaryDark));
-
 
             // MAIN INTENT
             builder.setContentIntent(getShowResultsPendingIntent(host));
