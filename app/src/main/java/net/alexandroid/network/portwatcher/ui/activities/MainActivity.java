@@ -191,13 +191,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void actionShareApp() {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        String appPackageName = getPackageName();
-        sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_msg)
-                + " " + Uri.parse(getString(R.string.share_url) + appPackageName));
-        sendIntent.setType("text/plain");
-        startActivity(Intent.createChooser(sendIntent, getString(R.string.share)));
+        share(getString(R.string.share_app_msg) + " " + Uri.parse(getString(R.string.share_url) + getPackageName()));
     }
 
 
@@ -345,9 +339,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onShareClick(ScanItem item) {
         MyLog.d("onShareClick");
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-
         StringBuilder str = new StringBuilder();
         str.append(getString(R.string.share1));
         str.append(item.getStrHost());
@@ -356,7 +347,13 @@ public class MainActivity extends AppCompatActivity implements
         str.append(getString(R.string.share3));
         str.append(item.getStrPorts());
         str.append(getString(R.string.share4));
-        sendIntent.putExtra(Intent.EXTRA_TEXT, str.toString());
+        share(str.toString());
+    }
+
+    private void share(String str) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, str);
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, getString(R.string.share)));
     }
