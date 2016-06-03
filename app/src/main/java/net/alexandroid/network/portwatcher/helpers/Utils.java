@@ -124,13 +124,30 @@ public class Utils {
         pResult.append("<font color=#FF0000>");
         pResult.append(num);
         pResult.append("</font> ");
+
     }
+
+    public static void appendRedText(StringBuilder pResult, String str) {
+        pResult.append("<font color=#FF0000>");
+        pResult.append(str);
+        pResult.append("</font> ");
+    }
+
+
 
     public static void appendGreenText(StringBuilder pResult, Integer num) {
         pResult.append("<font color=#4CAF50>");
         pResult.append(num);
         pResult.append("</font> ");
+
+
+    }    public static void appendGreenText(StringBuilder pResult, String str) {
+        pResult.append("<font color=#4CAF50>");
+        pResult.append(str);
+        pResult.append("</font> ");
     }
+
+
 
     public static String convertTimeFormMs(String str) {
         long dateTime = Long.valueOf(str);

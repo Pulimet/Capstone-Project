@@ -240,16 +240,48 @@ public class ScanFragment extends Fragment implements
 
         StringBuilder result = new StringBuilder();
 
-        for (int i = 0; i < results.size(); i++) {
-            int key = results.keyAt(i); // port num
-            // get the object by the key.
-            int value = results.get(key); // state of port
+        int firstRangeNum = 0;
 
-            if (value == PortScanRunnable.OPEN) {
-                Utils.appendGreenText(result, key);
-            } else {
-                Utils.appendRedText(result, key);
+        for (int i = 0; i < results.size(); i++) {
+            int port = results.keyAt(i); // port num
+            int nextPort = 0;
+            boolean isNextPortOpen = false;
+            if (i + 1 < results.size()) {
+                nextPort = results.keyAt(i + 1);
+                isNextPortOpen = results.get(nextPort) == PortScanRunnable.OPEN;
             }
+            // get the object by the key.
+            int state = results.get(port); // state of port
+
+            if (state == PortScanRunnable.OPEN) {
+                if (isNextPortOpen && nextPort - port == 1) {
+                    if (firstRangeNum == 0) {
+                        firstRangeNum = port;
+                    }
+                } else {
+                    if (firstRangeNum == 0) {
+                        Utils.appendGreenText(result, port);
+                    } else {
+                        Utils.appendGreenText(result, "" + firstRangeNum + "-" + port);
+                        firstRangeNum = 0;
+                    }
+                }
+            } else {
+                if (!isNextPortOpen && nextPort - port == 1) {
+                    if (firstRangeNum == 0) {
+                        firstRangeNum = port;
+                    }
+                } else {
+                    if (firstRangeNum == 0) {
+                        Utils.appendRedText(result, port);
+                    } else {
+                        Utils.appendRedText(result, "" + firstRangeNum + "-" + port);
+                        firstRangeNum = 0;
+                    }
+                }
+
+            }
+
         }
 
         tempLastScanResult = result.toString();

@@ -47,12 +47,36 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         allPorts = Utils.convertStringToIntegerList(mScanItem.getStrPorts());
         ArrayList<Integer> openPorts = Utils.convertStringToIntegerList(mScanItem.getStrWereOpen());
 
+        int firstRangeNum = 0;
+
         for (Integer port : allPorts) {
             MyLog.d("'Port: " + port);
-            if (openPorts.contains(port)) {
-                Utils.appendGreenText(result, port);
+            if (openPorts.contains(port)) { // If port is open
+                if (openPorts.contains(port + 1)) {
+                    if (firstRangeNum == 0) {
+                        firstRangeNum = port;
+                    }
+                } else {
+                    if (firstRangeNum == 0) {
+                        Utils.appendGreenText(result, port);
+                    } else {
+                        Utils.appendGreenText(result, "" + firstRangeNum + "-" + port);
+                        firstRangeNum = 0;
+                    }
+                }
             } else {
-                Utils.appendRedText(result, port);
+                if (allPorts.contains(port + 1) && !openPorts.contains(port + 1)) {
+                    if (firstRangeNum == 0) {
+                        firstRangeNum = port;
+                    }
+                } else {
+                    if (firstRangeNum == 0) {
+                        Utils.appendRedText(result, port);
+                    } else {
+                        Utils.appendRedText(result, "" + firstRangeNum + "-" + port);
+                        firstRangeNum = 0;
+                    }
+                }
             }
         }
 
