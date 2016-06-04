@@ -2,6 +2,9 @@ package net.alexandroid.network.portwatcher;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
 import net.alexandroid.network.portwatcher.helpers.Contextor;
 import net.alexandroid.network.portwatcher.helpers.Counter;
 import net.alexandroid.network.portwatcher.helpers.Debug;
@@ -14,10 +17,10 @@ public class MyApplication extends Application {
     public static final boolean SHOW_LOGS = true;
     public static final boolean SHOW_COUNTER_LOGS = true;
 
-
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         Contextor.getInstance().init(getApplicationContext());
         Counter.setInitTime();
         Debug.enable(this);
@@ -34,4 +37,6 @@ public class MyApplication extends Application {
     public static void setScanFragmentVisible(boolean pScanFragmentVisible) {
         isScanFragmentVisible = pScanFragmentVisible;
     }
+
+
 }

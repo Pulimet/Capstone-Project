@@ -93,6 +93,9 @@
                   android:theme="@android:style/Theme"
                   android:configChanges="orientation|keyboardHidden|screenSize" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="7abd0bc7cff32ac02e6efbb5ce745c7a208d7f40" />
     </application>
 
 </manifest>
