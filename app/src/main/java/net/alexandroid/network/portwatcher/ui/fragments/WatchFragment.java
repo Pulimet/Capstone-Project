@@ -118,7 +118,7 @@ public class WatchFragment extends Fragment
 
     private void showAddOrEditDialog(final String host, final String ports) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialoh_watch_fragment, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_watch_fragment, null);
         alertDialog.setTitle(dialogAddFlag ? getStr(R.string.add_new) : getStr(R.string.edit2));
         alertDialog.setView(view);
         alertDialog.setPositiveButton(

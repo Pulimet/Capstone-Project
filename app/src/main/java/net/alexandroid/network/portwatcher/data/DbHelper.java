@@ -89,6 +89,13 @@ public class DbHelper extends SQLiteOpenHelper {
         return values;
     }
 
+    public static ContentValues getButtonsContentValues(String title, String ports) {
+        ContentValues values = new ContentValues();
+        values.put(ButtonsEntry.COLUMN_TITLE, title);
+        values.put(ButtonsEntry.COLUMN_PORTS, ports);
+        return values;
+    }
+
     private void addButtons(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
         values.put(ButtonsEntry.COLUMN_TITLE, "80");

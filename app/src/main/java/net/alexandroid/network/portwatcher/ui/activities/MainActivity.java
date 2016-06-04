@@ -292,6 +292,7 @@ public class MainActivity extends AppCompatActivity implements
                 mFab.setImageResource(R.drawable.ic_delete);
                 break;
             case FRAGMENT_WATCH:
+            case FRAGMENT_EDIT:
                 setFabVisibility(true);
                 mFab.setImageResource(R.drawable.ic_add_wh);
                 break;
@@ -312,6 +313,11 @@ public class MainActivity extends AppCompatActivity implements
             case FRAGMENT_WATCH:
                 if (fragment instanceof WatchFragment) {
                     ((WatchFragment) fragment).onFabClick();
+                }
+                break;
+            case FRAGMENT_EDIT:
+                if (fragment instanceof EditFragment) {
+                    ((EditFragment) fragment).onFabClick();
                 }
                 break;
         }
@@ -389,6 +395,8 @@ public class MainActivity extends AppCompatActivity implements
     // EditFragment callbacks
     @Override
     public void onEditItemClick(String title, String ports) {
-
+        if (fragment instanceof EditFragment) {
+            ((EditFragment) fragment).showAddOrEditDialog(title, ports);
+        }
     }
 }
