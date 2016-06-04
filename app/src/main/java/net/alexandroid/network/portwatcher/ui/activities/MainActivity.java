@@ -441,6 +441,7 @@ public class MainActivity extends AppCompatActivity implements
         PeriodicTask task = new PeriodicTask.Builder()
                 .setService(ScheduleService.class)
                 .setExtras(bundle)
+                .setPersisted(true)
                 .setTag(Utils.createAlarmTag(pHost, pPorts, pInterval))
                 .setPeriod(Long.valueOf(pInterval) / 1000)
                 .build();

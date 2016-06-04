@@ -41,6 +41,11 @@ public class ScheduleService extends GcmTaskService {
                     String host = c.getString(ScheduleFragment.COL_HOST);
                     String ports = c.getString(ScheduleFragment.COL_PORTS);
                     String interval = c.getString(ScheduleFragment.COL_INTERVAL);
+                    boolean isEnabled = c.getInt(ScheduleFragment.COL_ENABLED) == 1;
+
+                    if (!isEnabled) {
+                        continue;
+                    }
 
                     MyLog.d("addSchedule, host: " + host + "  ports: " + ports + "   Interval: " + interval);
 
@@ -51,6 +56,7 @@ public class ScheduleService extends GcmTaskService {
                     PeriodicTask task = new PeriodicTask.Builder()
                             .setService(ScheduleService.class)
                             .setExtras(bundle)
+                            .setPersisted(true)
                             .setTag(Utils.createAlarmTag(host, ports, interval))
                             .setPeriod(Long.valueOf(interval) / 1000)
                             .build();
@@ -76,7 +82,7 @@ public class ScheduleService extends GcmTaskService {
 
         MyLog.d("host: " + host + "   ports: " + ports + "   onRunTask: " + tag);
         startScanService(host, ports);
-        return 0;
+        return GcmNetworkManager.RESULT_SUCCESS;
     }
 
     private void startScanService(String pHost, String pPorts) {
