@@ -25,8 +25,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
@@ -38,6 +40,7 @@ import net.alexandroid.network.portwatcher.ui.adapters.ScheduleRecyclerAdapter;
 import net.alexandroid.network.portwatcher.ui.adapters.decorators.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -64,6 +67,7 @@ public class ScheduleFragment extends Fragment
     private Cursor mCursor;
     public boolean dialogAddFlag;
     private EditText etHost, etPort, etInterval;
+    private Spinner mSpinner;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -140,10 +144,23 @@ public class ScheduleFragment extends Fragment
         etHost = (EditText) view.findViewById(R.id.input_host);
         etPort = (EditText) view.findViewById(R.id.input_port);
         etInterval = (EditText) view.findViewById(R.id.input_interval);
+        mSpinner = (Spinner) view.findViewById(R.id.spinner);
+        createSpinner();
+
         if (!dialogAddFlag) {
             etHost.setText(host);
             etPort.setText(ports);
-            etInterval.setText(interval);
+            long intervalLong = Long.valueOf(interval);
+            if (intervalLong > 1000 * 60 * 60) {
+                mSpinner.setSelection(1);
+                etInterval.setText(String.valueOf(intervalLong / 1000 / 60 / 60));
+            } else if (intervalLong > 1000 * 60 * 60 * 24) {
+                mSpinner.setSelection(2);
+                etInterval.setText(String.valueOf(intervalLong / 1000 / 60 / 60 / 24));
+            } else {
+                etInterval.setText(String.valueOf(intervalLong / 1000 / 60));
+            }
+
         }
 
         final AlertDialog dialog = alertDialog.create();
@@ -159,6 +176,7 @@ public class ScheduleFragment extends Fragment
                         String newHost = etHost.getText().toString().trim();
                         String newPorts = etPort.getText().toString().trim();
                         String newInterval = etInterval.getText().toString().trim();
+                        newInterval = Utils.formatIntervalToMs(newInterval, mSpinner);
                         ArrayList<Integer> list = Utils.convertStringToIntegerList(newPorts);
                         String checkedPorts = Utils.convertIntegerListToString(list);
                         etPort.setText(checkedPorts);
@@ -166,7 +184,7 @@ public class ScheduleFragment extends Fragment
                         MyLog.d("title: " + newHost);
                         MyLog.d("checkedPorts: " + checkedPorts);
 
-                        if (newHost.length() > 5 && checkedPorts.length() > 0) {
+                        if (newHost.length() > 5 && checkedPorts.length() > 0 && newInterval.length() > 0) {
                             if (dialogAddFlag) {
                                 addToDb(newHost, checkedPorts, newInterval);
                                 mListener.addSchedule(newHost, checkedPorts, newInterval);
@@ -187,6 +205,22 @@ public class ScheduleFragment extends Fragment
             }
         });
         dialog.show();
+    }
+
+
+
+    private void createSpinner() {
+        List<String> spinnerOptions = new ArrayList<>();
+        spinnerOptions.add("Minutes");
+        spinnerOptions.add("Hours");
+        spinnerOptions.add("Days");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerOptions);
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // attaching data adapter to spinner
+        mSpinner.setAdapter(dataAdapter);
     }
 
 

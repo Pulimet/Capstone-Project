@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.SparseIntArray;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import net.alexandroid.network.portwatcher.task.PortScanRunnable;
 
@@ -208,5 +209,22 @@ public class Utils {
         } else {
             return "Every " + m / 60 / 24 + " day/s";
         }
+    }
+
+    public static String formatIntervalToMs(String pNewInterval, Spinner mSpinner) {
+        long intervalLong = Long.valueOf(pNewInterval);
+        switch (mSpinner.getSelectedItemPosition()) {
+            case 0:
+                intervalLong = intervalLong * 60 * 1000;
+                break;
+            case 1:
+                intervalLong = intervalLong * 60 * 60 * 1000;
+                break;
+            case 2:
+                intervalLong = intervalLong * 24 * 60 * 60 * 1000;
+                break;
+        }
+        pNewInterval = String.valueOf(intervalLong);
+        return pNewInterval;
     }
 }
