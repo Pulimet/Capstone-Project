@@ -25,6 +25,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import net.alexandroid.network.portwatcher.R;
@@ -111,6 +112,7 @@ public class WatchFragment extends Fragment
         String host = mCursor.getString(WatchFragment.COL_HOST);
         String ports = mCursor.getString(WatchFragment.COL_PORTS);
 
+        dialogAddFlag = false;
         showAddOrEditDialog(host, ports);
     }
 
@@ -124,27 +126,6 @@ public class WatchFragment extends Fragment
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String host = etPort.getText().toString().trim();
-
-                        String ports = etPort.getText().toString().trim();
-                        ArrayList<Integer> list = Utils.convertStringToIntegerList(ports);
-                        String checkedPorts = Utils.convertIntegerListToString(list);
-                        etPort.setText(checkedPorts);
-
-                        if (host.length() > 5 && checkedPorts.length() > 0) {
-                            if (dialogAddFlag) {
-                                dialogAddFlag = false;
-                                addToDb(etHost.getText().toString(), checkedPorts);
-                                Snackbar.make(etHost, R.string.added_to_watchlist, Snackbar.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                            } else {
-                                editRowDb(host, ports, etHost.getText().toString(), checkedPorts);
-                                Snackbar.make(etHost, R.string.saved, Snackbar.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                            }
-                        } else {
-                            Snackbar.make(etHost, R.string.wrong_params, Snackbar.LENGTH_SHORT).show();
-                        }
                     }
                 });
         etHost = (EditText) view.findViewById(R.id.input_host);
@@ -153,10 +134,49 @@ public class WatchFragment extends Fragment
             etHost.setText(host);
             etPort.setText(ports);
         }
-        alertDialog.show();
+
+        final AlertDialog dialog = alertDialog.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface d) {
+                Button button = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @SuppressWarnings("ConstantConditions")
+                    @Override
+                    public void onClick(View v) {
+                        MyLog.d("onClick");
+                        String newHost = etHost.getText().toString().trim();
+                        String newPorts = etPort.getText().toString().trim();
+                        ArrayList<Integer> list = Utils.convertStringToIntegerList(newPorts);
+                        String checkedPorts = Utils.convertIntegerListToString(list);
+                        etPort.setText(checkedPorts);
+
+                        MyLog.d("host: " + host);
+                        MyLog.d("checkedPorts: " + checkedPorts);
+
+                        if (newHost.length() > 5 && checkedPorts.length() > 0) {
+                            if (dialogAddFlag) {
+                                addToDb(newHost, checkedPorts);
+                                Snackbar.make(getView(), R.string.added_to_watchlist, Snackbar.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            } else {
+                                editRowDb(host, ports, newHost, checkedPorts);
+                                Snackbar.make(getView(), R.string.saved, Snackbar.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        } else {
+                            MyLog.d("Wrong parameters");
+                            Snackbar.make(etHost, R.string.wrong_params, Snackbar.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+        dialog.show();
     }
 
     private void editRowDb(String pHost, String pPorts, String pNewHost, String pNewPorts) {
+        MyLog.d("editRowDb");
         ContentResolver contentResolver = getActivity().getApplicationContext().getContentResolver();
         String where = DbContract.WatchlistEntry.COLUMN_HOST + "=" + DatabaseUtils.sqlEscapeString(pHost) + " AND " +
                 DbContract.WatchlistEntry.COLUMN_PORTS + "=" + DatabaseUtils.sqlEscapeString(pPorts);
@@ -166,6 +186,7 @@ public class WatchFragment extends Fragment
     }
 
     private void addToDb(String host, String ports) {
+        MyLog.d("addToDb");
         ContentResolver contentResolver = getActivity().getApplicationContext().getContentResolver();
         ContentValues contentValues =
                 DbHelper.getWatchlistContentValues(host, ports);

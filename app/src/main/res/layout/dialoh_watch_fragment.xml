@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_search_view"
-            android:inputType="numberDecimal"
+            android:inputType="textUri"
             android:singleLine="true"/>
     </android.support.design.widget.TextInputLayout>
 
