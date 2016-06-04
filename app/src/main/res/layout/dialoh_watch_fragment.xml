@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <android.support.design.widget.TextInputLayout
+        android:padding="16dp"
+        android:id="@+id/input_layout_host"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/input_host"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_search_view"
+            android:inputType="numberDecimal"
+            android:singleLine="true"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:padding="16dp"
+        android:id="@+id/input_layout_port"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/input_port"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789,-"
+            android:hint="@string/hint_port"
+            android:inputType="numberDecimal"
+            android:singleLine="true"/>
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

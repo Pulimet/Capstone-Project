@@ -74,9 +74,19 @@
     <string name="wathclist_is_empty">Watchlist is empty</string>
     <string name="scanning">Scanning…</string>
 
+    <string name="add_new">Add new</string>
+    <string name="edit2">Edit</string>
+
+    <string name="added_to_watchlist">Added to watchlist</string>
+    <string name="saved">Saved</string>
+    <string name="wrong_params">Wrong parameters</string>
+
     <!--MainActivity # EditFragment-->
     <string name="no_buttons">No buttons</string>
     <string name="title">TITLE:</string>
+    <string name="add">Add</string>
+    <string name="save">Save</string>
+
 
 
 </resources>

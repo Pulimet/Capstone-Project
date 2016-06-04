@@ -291,10 +291,10 @@ public class MainActivity extends AppCompatActivity implements
                 setFabVisibility(true);
                 mFab.setImageResource(R.drawable.ic_delete);
                 break;
-/*            case FRAGMENT_SCAN:
+            case FRAGMENT_WATCH:
                 setFabVisibility(true);
-                mFab.setImageResource(R.drawable.ic_menu_search_white);
-                break;*/
+                mFab.setImageResource(R.drawable.ic_add_wh);
+                break;
             default:
                 setFabVisibility(false);
         }
@@ -309,11 +309,11 @@ public class MainActivity extends AppCompatActivity implements
             case FRAGMENT_MAIN_HISTORY:
                 Snackbar.make(v, R.string.clear_history, Snackbar.LENGTH_LONG).setAction(R.string.clear, MainActivity.this).show();
                 break;
-/*            case FRAGMENT_SCAN:
-                if (fragment instanceof ScanFragment) {
-                    ((ScanFragment) fragment).onFabClick();
+            case FRAGMENT_WATCH:
+                if (fragment instanceof WatchFragment) {
+                    ((WatchFragment) fragment).onFabClick();
                 }
-                break;*/
+                break;
         }
     }
 

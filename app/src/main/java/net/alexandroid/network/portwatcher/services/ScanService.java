@@ -7,7 +7,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -42,6 +41,8 @@ public class ScanService extends Service {
     public static final String EXTRA_SCAN_ID = "scan_id";
     public static final String EXTRA_HOST = "host";
     public static final String EXTRA_PORTS = "ports";
+
+    private static int notifId;
 
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
@@ -159,7 +160,7 @@ public class ScanService extends Service {
 
 
             Notification notification = builder.build();
-            NotificationManagerCompat.from(getApplicationContext()).notify(scanId, notification);
+            NotificationManagerCompat.from(getApplicationContext()).notify(notifId++, notification);
         }
 
         private PendingIntent getShowResultsPendingIntent(String host) {
