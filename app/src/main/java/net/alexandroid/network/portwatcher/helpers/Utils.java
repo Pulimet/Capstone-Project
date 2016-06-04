@@ -160,7 +160,9 @@ public class Utils {
         pResult.append("</font> ");
 
 
-    }    public static void appendGreenText(StringBuilder pResult, String str) {
+    }
+
+    public static void appendGreenText(StringBuilder pResult, String str) {
         pResult.append("<font color=#4CAF50>");
         pResult.append(str);
         pResult.append("</font> ");
@@ -195,6 +197,16 @@ public class Utils {
     }
 
     public static String formatInterval(String pInterval) {
-        return "";
+        long i = Long.valueOf(pInterval);
+        long m = i / 1000 / 60;
+        if (m < 1) {
+            return "Error";
+        } else if (m < 60) {
+            return "Every " + m + " minute/s";
+        } else if (m < 60 * 60) {
+            return "Every " + m / 60 + " hour/s";
+        } else {
+            return "Every " + m / 60 / 24 + " day/s";
+        }
     }
 }
