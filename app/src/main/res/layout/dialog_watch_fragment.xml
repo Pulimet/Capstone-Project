@@ -20,7 +20,9 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:padding="16dp"
+        android:paddingTop="4dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:id="@+id/input_layout_port"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

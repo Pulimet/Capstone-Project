@@ -88,7 +88,7 @@ public class ScheduleFragment extends Fragment
         RecyclerView recyclerView = (RecyclerView) pView.findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext().getApplicationContext()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        enableSwipe(recyclerView, this, R.drawable.ic_refresh_wh, R.drawable.ic_delete);
+        enableSwipe(recyclerView, this, R.drawable.ic_menu_edit_wh, R.drawable.ic_delete);
         View emptyView = pView.findViewById(R.id.empty);
         mAdapter = new ScheduleRecyclerAdapter(emptyView, mListener);
         recyclerView.setAdapter(mAdapter);

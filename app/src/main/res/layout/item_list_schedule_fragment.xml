@@ -42,7 +42,8 @@
         android:text="@string/interval"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="@color/secondary_text"
-        android:textSize="12sp"/>
+        android:textSize="12sp"
+        android:layout_marginBottom="14dp"/>
 
     <TextView
         android:id="@+id/tvPorts"
@@ -83,7 +84,8 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:checked="true"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:layout_marginRight="16dp"/>
 
 
 </RelativeLayout>
