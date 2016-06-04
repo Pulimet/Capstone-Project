@@ -87,6 +87,12 @@
     <string name="add">Add</string>
     <string name="save">Save</string>
     <string name="title2">Title</string>
+    <string name="added">Added</string>
+
+    <!--MainActivity # ScheduleFragment-->
+    <string name="schedule_list_is_empty">Schedule list is empty</string>
+    <string name="interval">INTERVAL:</string>
+    <string name="interval2">Interval</string>
 
 
 </resources>

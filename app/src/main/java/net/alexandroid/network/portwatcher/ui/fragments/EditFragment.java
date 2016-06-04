@@ -60,7 +60,7 @@ public class EditFragment extends Fragment
     private EditRecyclerAdapter mAdapter;
     private Paint mPaint = new Paint();
     private Cursor mCursor;
-    private boolean dialogAddFlag;
+    public boolean dialogAddFlag;
     private EditText etTitle, etPort;
 
     /**
@@ -110,7 +110,7 @@ public class EditFragment extends Fragment
 
         mCursor.moveToPosition(position);
         String title = mCursor.getString(EditFragment.COL_TITLE);
-        String ports = mCursor.getString(WatchFragment.COL_PORTS);
+        String ports = mCursor.getString(EditFragment.COL_PORTS);
 
         dialogAddFlag = false;
         showAddOrEditDialog(title, ports);
@@ -157,7 +157,7 @@ public class EditFragment extends Fragment
                         if (newTitle.length() > 0 && checkedPorts.length() > 0) {
                             if (dialogAddFlag) {
                                 addToDb(newTitle, checkedPorts);
-                                Snackbar.make(getView(), R.string.added_to_watchlist, Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(getView(), R.string.added, Snackbar.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             } else {
                                 editRowDb(title, ports, newTitle, checkedPorts);

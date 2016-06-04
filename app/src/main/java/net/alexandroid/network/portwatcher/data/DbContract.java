@@ -93,11 +93,10 @@ public class DbContract {
 
         public static final String TABLE_NAME = "schedule";
 
-        public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_HOST = "host";
         public static final String COLUMN_PORTS = "ports";
         public static final String COLUMN_INTERVAL = "interval";
-        public static final String COLUMN_ENABLED = "enabled";
+        public static final String COLUMN_ENABLED = "isenabled";
 
         public static Uri buildScheduleUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

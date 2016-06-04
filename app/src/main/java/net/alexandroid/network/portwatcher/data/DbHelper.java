@@ -45,7 +45,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_SCHEDULE_TABLE = "CREATE TABLE " + ScheduleEntry.TABLE_NAME + " (" +
                 ScheduleEntry._ID + " INTEGER PRIMARY KEY," +
-                ScheduleEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 ScheduleEntry.COLUMN_HOST + " TEXT NOT NULL, " +
                 ScheduleEntry.COLUMN_PORTS + " TEXT NOT NULL, " +
                 ScheduleEntry.COLUMN_INTERVAL + " INTEGER NOT NULL, " +
@@ -60,6 +59,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         //addHistoryDummy(db);
         //addWatchListDummy(db);
+        addScheduleListDummy(db);
         addButtons(db);
     }
 
@@ -71,6 +71,11 @@ public class DbHelper extends SQLiteOpenHelper {
     private void addWatchListDummy(SQLiteDatabase db) {
         ContentValues values = getWatchlistContentValues("alexandroid.net", "80,90");
         db.insert(WatchlistEntry.TABLE_NAME, NULL_STR, values);
+    }
+
+    private void addScheduleListDummy(SQLiteDatabase db) {
+        ContentValues values = getScheduleContentValues("blablazz.com", "80,90", 123456, 1);
+        db.insert(ScheduleEntry.TABLE_NAME, NULL_STR, values);
     }
 
     public static ContentValues getHistoryContentValues(String host, String ports, String wereOpen, long dateTime) {
@@ -93,6 +98,15 @@ public class DbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(ButtonsEntry.COLUMN_TITLE, title);
         values.put(ButtonsEntry.COLUMN_PORTS, ports);
+        return values;
+    }
+
+    public static ContentValues getScheduleContentValues(String host, String ports, long interval, int enabled) {
+        ContentValues values = new ContentValues();
+        values.put(ScheduleEntry.COLUMN_HOST, host);
+        values.put(ScheduleEntry.COLUMN_PORTS, ports);
+        values.put(ScheduleEntry.COLUMN_INTERVAL, interval);
+        values.put(ScheduleEntry.COLUMN_ENABLED, enabled);
         return values;
     }
 

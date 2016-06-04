@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements
         MainHistoryFragment.MainFragmentInteractionListener,
         ScanFragment.ScanFragmentInteractionListener,
         WatchFragment.WatchFragmentInteractionListener,
-        EditFragment.EditFragmentInteractionListener {
+        EditFragment.EditFragmentInteractionListener,
+        ScheduleFragment.ScheduleFragmentInteractionListener {
 
     public static final int FRAGMENT_MAIN_HISTORY = 0;
     public static final int FRAGMENT_SCAN = 1;
@@ -293,6 +294,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case FRAGMENT_WATCH:
             case FRAGMENT_EDIT:
+            case FRAGMENT_SCHEDULE:
                 setFabVisibility(true);
                 mFab.setImageResource(R.drawable.ic_add_wh);
                 break;
@@ -318,6 +320,11 @@ public class MainActivity extends AppCompatActivity implements
             case FRAGMENT_EDIT:
                 if (fragment instanceof EditFragment) {
                     ((EditFragment) fragment).onFabClick();
+                }
+                break;
+            case FRAGMENT_SCHEDULE:
+                if (fragment instanceof ScheduleFragment) {
+                    ((ScheduleFragment) fragment).onFabClick();
                 }
                 break;
         }
@@ -390,13 +397,21 @@ public class MainActivity extends AppCompatActivity implements
         startService(intent);
     }
 
-    // Watchlist fragment callbacks
-
     // EditFragment callbacks
     @Override
     public void onEditItemClick(String title, String ports) {
         if (fragment instanceof EditFragment) {
+            ((EditFragment) fragment).dialogAddFlag = false;
             ((EditFragment) fragment).showAddOrEditDialog(title, ports);
+        }
+    }
+
+    // ScheduleFragment callbacks
+    @Override
+    public void onScheduleItemClick(String host, String ports, String interval) {
+        if (fragment instanceof EditFragment) {
+            ((ScheduleFragment) fragment).dialogAddFlag = false;
+            ((ScheduleFragment) fragment).showAddOrEditDialog(host, ports, interval);
         }
     }
 }
