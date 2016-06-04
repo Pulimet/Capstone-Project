@@ -94,5 +94,8 @@
     <string name="interval">INTERVAL:</string>
     <string name="interval2">Interval</string>
 
+    <!--Widget-->
+    <string name="add_widget">Add widget</string>
+
 
 </resources>
