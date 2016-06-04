@@ -98,6 +98,7 @@ public class ScheduleFragment extends Fragment
         String ports = mCursor.getString(ScheduleFragment.COL_PORTS);
         String interval = mCursor.getString(ScheduleFragment.COL_INTERVAL);
         deleteFromDb(host, ports, interval);
+        removeSchedule(host, ports, interval);
     }
 
     private void deleteFromDb(String pHost, String pPorts, String pInterval) {
@@ -168,10 +169,12 @@ public class ScheduleFragment extends Fragment
                         if (newHost.length() > 5 && checkedPorts.length() > 0) {
                             if (dialogAddFlag) {
                                 addToDb(newHost, checkedPorts, newInterval);
+                                addSchedule(newHost, checkedPorts, newInterval);
                                 Snackbar.make(getView(), R.string.added, Snackbar.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             } else {
                                 editRowDb(host, ports, interval, newHost, checkedPorts, newInterval);
+                                updateSchedule(host, ports, interval, newHost, checkedPorts, newInterval);
                                 Snackbar.make(getView(), R.string.saved, Snackbar.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             }
@@ -185,6 +188,7 @@ public class ScheduleFragment extends Fragment
         });
         dialog.show();
     }
+
 
     private void editRowDb(String pHost, String pPorts, String pInterval, String pNewHost, String pNewPorts, String pNewInterval) {
         MyLog.d("editRowDb");
@@ -269,6 +273,23 @@ public class ScheduleFragment extends Fragment
         dialogAddFlag = true;
         showAddOrEditDialog(null, null, null);
     }
+
+    // Schedule control
+
+    private void addSchedule(String pNewHost, String pCheckedPorts, String pNewInterval) {
+        // TOdO Add
+    }
+
+    private void updateSchedule(String pHost, String pPorts, String pInterval, String pNewHost, String pCheckedPorts, String pNewInterval) {
+        // TODO update
+    }
+
+    private void removeSchedule(String pHost, String pPorts, String pInterval) {
+        // TODO Remove
+    }
+
+
+
 
 
     @Override

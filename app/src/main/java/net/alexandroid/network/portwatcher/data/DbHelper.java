@@ -59,7 +59,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         //addHistoryDummy(db);
         //addWatchListDummy(db);
-        addScheduleListDummy(db);
+        //addScheduleListDummy(db);
         addButtons(db);
     }
 
