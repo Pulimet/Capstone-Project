@@ -1,11 +1,14 @@
 package net.alexandroid.network.portwatcher.ui.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -21,6 +24,12 @@ import android.transition.Slide;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.PeriodicTask;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
@@ -28,6 +37,7 @@ import net.alexandroid.network.portwatcher.data.DbHelper;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.objects.ScanItem;
 import net.alexandroid.network.portwatcher.services.ScanService;
+import net.alexandroid.network.portwatcher.services.ScheduleService;
 import net.alexandroid.network.portwatcher.ui.fragments.EditFragment;
 import net.alexandroid.network.portwatcher.ui.fragments.MainHistoryFragment;
 import net.alexandroid.network.portwatcher.ui.fragments.ScanFragment;
@@ -52,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements
     public static final int FRAGMENT_WATCH = 3;
     public static final int FRAGMENT_SCHEDULE = 4;
 
+    private static final int RC_PLAY_SERVICES = 123;
+
     public static String strLastQuery = "google.com";
 
     private static int selectedFragment;
@@ -62,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements
     private NavigationView mNavigationView;
     private Fragment fragment;
 
+    private GcmNetworkManager mGcmNetworkManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements
         seToolBarAndNavigation();
         initialFab();
         showMainFragment(savedInstanceState);
+
+        mGcmNetworkManager = GcmNetworkManager.getInstance(this);
+        checkPlayServicesAvailable();
     }
 
     @Override
@@ -416,8 +433,22 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void addSchedule(String pNewHost, String pCheckedPorts, String pNewInterval) {
+    public void addSchedule(String pHost, String pPorts, String pInterval) {
+        MyLog.d("addSchedule, host: " + pHost + "  ports" + pPorts);
 
+        PeriodicTask task = new PeriodicTask.Builder()
+                .setService(ScheduleService.class)
+                .setTag("TAGGG")
+                .setPeriod(Long.valueOf(pInterval))
+                .build();
+
+        mGcmNetworkManager.schedule(task);
+    }
+
+    @Override
+    public void removeSchedule(String pHost, String pPorts, String pInterval) {
+        MyLog.d("removeSchedule, host: " + pHost + "  ports" + pPorts);
+        mGcmNetworkManager.cancelTask("TAGGG", ScheduleService.class);
     }
 
     @Override
@@ -425,8 +456,23 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-    @Override
-    public void removeSchedule(String pHost, String pPorts, String pInterval) {
 
+
+    // Google play services
+
+    private void checkPlayServicesAvailable() {
+        GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
+        int resultCode = availability.isGooglePlayServicesAvailable(this);
+
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (availability.isUserResolvableError(resultCode)) {
+                // Show dialog to resolve the error.
+                availability.getErrorDialog(this, resultCode, RC_PLAY_SERVICES).show();
+            } else {
+                // Unresolvable error
+                Toast.makeText(this, "Google Play Services error", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
+
 }
