@@ -23,10 +23,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
+import com.startapp.android.publish.StartAppAd;
+import com.startapp.android.publish.StartAppSDK;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
@@ -74,9 +79,13 @@ public class MainActivity extends AppCompatActivity implements
 
     private GcmNetworkManager mGcmNetworkManager;
 
+    private InterstitialAd mInterstitialAd;
+    private StartAppAd startAppAd = new StartAppAd(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StartAppSDK.init(this, "205232173", false);
         setContentView(R.layout.activity_main);
 
         seToolBarAndNavigation();
@@ -85,7 +94,31 @@ public class MainActivity extends AppCompatActivity implements
 
         mGcmNetworkManager = GcmNetworkManager.getInstance(this);
         checkPlayServicesAvailable();
+
+        initAdMob();
     }
+
+    private void initAdMob() {
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.banner_ad_unit_id));
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+            }
+        });
+        requestNewInterstitial();
+    }
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("441009D6951E7B1833F74A291BCF74D7")
+                .build();
+
+        mInterstitialAd.loadAd(adRequest);
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -107,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements
         if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            startAppAd.onBackPressed();
             super.onBackPressed();
         }
     }
@@ -163,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements
                 mToolbar.setSubtitle(R.string.scan);
                 break;
             case R.id.nav_edit:
+                mInterstitialAd.show();
                 replaceFragmentWith(FRAGMENT_EDIT, false);
                 mToolbar.setSubtitle(R.string.edit);
                 break;

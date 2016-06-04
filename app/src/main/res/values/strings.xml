@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Port Watcher</string>
 
+    <string name="banner_ad_unit_id">ca-app-pub-2377201727291572/6272438209</string>
+
     <!--Error messages-->
     <string name="network_not_available">Network not available</string>
 
