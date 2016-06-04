@@ -227,4 +227,14 @@ public class Utils {
         pNewInterval = String.valueOf(intervalLong);
         return pNewInterval;
     }
+
+    public static String createAlarmTag(String pHost, String pPorts, String pInterval) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(pHost);
+        builder.append("|");
+        builder.append(pPorts);
+        builder.append("|");
+        builder.append(pInterval);
+        return builder.toString();
+    }
 }

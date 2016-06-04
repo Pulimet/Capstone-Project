@@ -46,7 +46,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         holder.tvHost.setText(mCursor.getString(ScheduleFragment.COL_HOST));
         holder.tvPorts.setText(mCursor.getString(ScheduleFragment.COL_PORTS));
         String interval = mCursor.getString(ScheduleFragment.COL_INTERVAL);
-        MyLog.d("interval: " + interval + " ==>> " + Utils.formatInterval(interval));
+        //MyLog.d("interval: " + interval + " ==>> " + Utils.formatInterval(interval));
         holder.tvInterval.setText(Utils.formatInterval(interval));
         holder.toggleBtn.setChecked(mCursor.getInt(ScheduleFragment.COL_ENABLED) == 1);
 

@@ -1,14 +1,11 @@
 package net.alexandroid.network.portwatcher.ui.activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -35,6 +32,7 @@ import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
 import net.alexandroid.network.portwatcher.data.DbHelper;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
+import net.alexandroid.network.portwatcher.helpers.Utils;
 import net.alexandroid.network.portwatcher.objects.ScanItem;
 import net.alexandroid.network.portwatcher.services.ScanService;
 import net.alexandroid.network.portwatcher.services.ScheduleService;
@@ -240,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements
 
         fragment = getSupportFragmentManager().findFragmentByTag("tag" + fragmentInt);
         if (fragment == null) {
-            MyLog.d("replaceFragmentWith - fragment == null");
+            //MyLog.d("replaceFragmentWith - fragment == null");
             switch (fragmentInt) {
                 case FRAGMENT_MAIN_HISTORY:
                     fragment = new MainHistoryFragment();
@@ -434,12 +432,17 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void addSchedule(String pHost, String pPorts, String pInterval) {
-        MyLog.d("addSchedule, host: " + pHost + "  ports" + pPorts);
+        MyLog.d("addSchedule, host: " + pHost + "  ports: " + pPorts + "   Interval: " + pInterval);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(ScheduleService.EXTRA_HOST, pHost);
+        bundle.putString(ScheduleService.EXTRA_PORT, pPorts);
 
         PeriodicTask task = new PeriodicTask.Builder()
                 .setService(ScheduleService.class)
-                .setTag("TAGGG")
-                .setPeriod(Long.valueOf(pInterval))
+                .setExtras(bundle)
+                .setTag(Utils.createAlarmTag(pHost, pPorts, pInterval))
+                .setPeriod(Long.valueOf(pInterval) / 1000)
                 .build();
 
         mGcmNetworkManager.schedule(task);
@@ -447,15 +450,15 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void removeSchedule(String pHost, String pPorts, String pInterval) {
-        MyLog.d("removeSchedule, host: " + pHost + "  ports" + pPorts);
-        mGcmNetworkManager.cancelTask("TAGGG", ScheduleService.class);
+        MyLog.d("removeSchedule, host: " + pHost + "  ports: " + pPorts + "   Interval: " + pInterval);
+        mGcmNetworkManager.cancelTask(Utils.createAlarmTag(pHost, pPorts, pInterval), ScheduleService.class);
     }
 
     @Override
     public void updateSchedule(String pHost, String pPorts, String pInterval, String pNewHost, String pCheckedPorts, String pNewInterval) {
-
+        removeSchedule(pHost, pPorts, pInterval);
+        addSchedule(pNewHost, pCheckedPorts, pNewInterval);
     }
-
 
 
     // Google play services
