@@ -34,7 +34,6 @@ import net.alexandroid.network.portwatcher.data.DbHelper;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.helpers.Utils;
 import net.alexandroid.network.portwatcher.interfaces.OnSwipe;
-import net.alexandroid.network.portwatcher.objects.ScanItem;
 import net.alexandroid.network.portwatcher.ui.adapters.ScheduleRecyclerAdapter;
 import net.alexandroid.network.portwatcher.ui.adapters.decorators.SimpleDividerItemDecoration;
 
@@ -98,7 +97,7 @@ public class ScheduleFragment extends Fragment
         String ports = mCursor.getString(ScheduleFragment.COL_PORTS);
         String interval = mCursor.getString(ScheduleFragment.COL_INTERVAL);
         deleteFromDb(host, ports, interval);
-        removeSchedule(host, ports, interval);
+        mListener.removeSchedule(host, ports, interval);
     }
 
     private void deleteFromDb(String pHost, String pPorts, String pInterval) {
@@ -126,6 +125,7 @@ public class ScheduleFragment extends Fragment
     }
 
     public void showAddOrEditDialog(final String host, final String ports, final String interval) {
+        MyLog.d("showAddOrEditDialog");
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_schedule_fragment, null);
         alertDialog.setTitle(dialogAddFlag ? getStr(R.string.add_new) : getStr(R.string.edit2));
@@ -169,12 +169,12 @@ public class ScheduleFragment extends Fragment
                         if (newHost.length() > 5 && checkedPorts.length() > 0) {
                             if (dialogAddFlag) {
                                 addToDb(newHost, checkedPorts, newInterval);
-                                addSchedule(newHost, checkedPorts, newInterval);
+                                mListener.addSchedule(newHost, checkedPorts, newInterval);
                                 Snackbar.make(getView(), R.string.added, Snackbar.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             } else {
                                 editRowDb(host, ports, interval, newHost, checkedPorts, newInterval);
-                                updateSchedule(host, ports, interval, newHost, checkedPorts, newInterval);
+                                mListener.updateSchedule(host, ports, interval, newHost, checkedPorts, newInterval);
                                 Snackbar.make(getView(), R.string.saved, Snackbar.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             }
@@ -274,23 +274,6 @@ public class ScheduleFragment extends Fragment
         showAddOrEditDialog(null, null, null);
     }
 
-    // Schedule control
-
-    private void addSchedule(String pNewHost, String pCheckedPorts, String pNewInterval) {
-        // TOdO Add
-    }
-
-    private void updateSchedule(String pHost, String pPorts, String pInterval, String pNewHost, String pCheckedPorts, String pNewInterval) {
-        // TODO update
-    }
-
-    private void removeSchedule(String pHost, String pPorts, String pInterval) {
-        // TODO Remove
-    }
-
-
-
-
 
     @Override
     public void onAttach(Context context) {
@@ -349,5 +332,11 @@ public class ScheduleFragment extends Fragment
      */
     public interface ScheduleFragmentInteractionListener {
         void onScheduleItemClick(String host, String ports, String interval);
+
+        void addSchedule(String pNewHost, String pCheckedPorts, String pNewInterval);
+
+        void updateSchedule(String pHost, String pPorts, String pInterval, String pNewHost, String pCheckedPorts, String pNewInterval);
+
+        void removeSchedule(String pHost, String pPorts, String pInterval);
     }
 }

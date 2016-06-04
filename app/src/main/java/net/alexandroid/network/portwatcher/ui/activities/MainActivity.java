@@ -409,9 +409,24 @@ public class MainActivity extends AppCompatActivity implements
     // ScheduleFragment callbacks
     @Override
     public void onScheduleItemClick(String host, String ports, String interval) {
-        if (fragment instanceof EditFragment) {
+        if (fragment instanceof ScheduleFragment) {
             ((ScheduleFragment) fragment).dialogAddFlag = false;
             ((ScheduleFragment) fragment).showAddOrEditDialog(host, ports, interval);
         }
+    }
+
+    @Override
+    public void addSchedule(String pNewHost, String pCheckedPorts, String pNewInterval) {
+
+    }
+
+    @Override
+    public void updateSchedule(String pHost, String pPorts, String pInterval, String pNewHost, String pCheckedPorts, String pNewInterval) {
+
+    }
+
+    @Override
+    public void removeSchedule(String pHost, String pPorts, String pInterval) {
+
     }
 }

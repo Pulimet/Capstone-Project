@@ -17,6 +17,7 @@ import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
 import net.alexandroid.network.portwatcher.data.DbHelper;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
+import net.alexandroid.network.portwatcher.helpers.Utils;
 import net.alexandroid.network.portwatcher.ui.fragments.ScheduleFragment;
 
 public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecyclerAdapter.ViewHolder> implements
@@ -44,7 +45,9 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
 
         holder.tvHost.setText(mCursor.getString(ScheduleFragment.COL_HOST));
         holder.tvPorts.setText(mCursor.getString(ScheduleFragment.COL_PORTS));
-        holder.tvInterval.setText(mCursor.getString(ScheduleFragment.COL_INTERVAL));
+        String interval = mCursor.getString(ScheduleFragment.COL_INTERVAL);
+        MyLog.d("interval: " + interval + " ==>> " + Utils.formatInterval(interval));
+        holder.tvInterval.setText(Utils.formatInterval(interval));
         holder.toggleBtn.setChecked(mCursor.getInt(ScheduleFragment.COL_ENABLED) == 1);
 
         holder.itemView.setOnClickListener(this);
@@ -84,7 +87,11 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
         int numOfUpdatedRows = contentResolver.update(DbContract.ScheduleEntry.CONTENT_URI, cv, where, null);
         MyLog.d("numOfUpdatedRows: " + numOfUpdatedRows);
 
-        // TODO Disable/Enable scan schedule
+        if (isChecked) {
+            mListener.addSchedule(host, ports, interval);
+        } else {
+            mListener.removeSchedule(host, ports, interval);
+        }
     }
 
     @Override

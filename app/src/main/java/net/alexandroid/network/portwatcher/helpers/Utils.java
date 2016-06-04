@@ -194,4 +194,7 @@ public class Utils {
         return bitmap;
     }
 
+    public static String formatInterval(String pInterval) {
+        return "";
+    }
 }
