@@ -16,9 +16,9 @@ public class PortScanRunnable implements Runnable {
 
     public static final int INIT = 0;
     public static final int OPEN = 1;
-    public static final int WRONG_HOST = 1;
-    public static final int TIMEOUT = 2;
-    public static final int CLOSED = 3;
+    public static final int WRONG_HOST = 2;
+    public static final int TIMEOUT = 3;
+    public static final int CLOSED = 4;
 
     private String host;
     private int port;
