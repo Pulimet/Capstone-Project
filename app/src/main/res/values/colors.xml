@@ -14,4 +14,7 @@
 
     <!--Dialog-->
     <color name="trans40">#40000000</color>
+
+    <!--Widget-->
+    <color name="colorPrimaryTrans55">#55607D8B</color>
 </resources>
