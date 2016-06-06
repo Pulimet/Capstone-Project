@@ -99,5 +99,11 @@
     <!--Widget-->
     <string name="add_widget">Add widget</string>
 
+    <!--Widget keys-->
+    <string name="key_count_widgets">countWidgets</string>
+    <string name="key_widget_title">widgetTitle_</string>
+    <string name="key_widget_host">widgetHost_</string>
+    <string name="key_widget_ports">widgetPorts_</string>
+
 
 </resources>

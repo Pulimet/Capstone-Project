@@ -21,42 +21,17 @@ public class ScanItem implements Parcelable {
         return strHost;
     }
 
-    public void setStrHost(String pStrHost) {
-        strHost = pStrHost;
-    }
-
     public String getStrPorts() {
         return strPorts;
-    }
-
-    public void setStrPorts(String pStrPorts) {
-        strPorts = pStrPorts;
     }
 
     public String getStrDateTime() {
         return strDateTime;
     }
 
-    public void setStrDateTime(String pStrDateTime) {
-        strDateTime = pStrDateTime;
-    }
-
-    public long getSystemTime() {
-        return systemTime;
-    }
-
-    public void setSystemTime() {
-        systemTime = System.currentTimeMillis();
-    }
-
     public String getStrWereOpen() {
         return strWereOpen;
     }
-
-    public void setStrWereOpen(String pStrWereOpen) {
-        strWereOpen = pStrWereOpen;
-    }
-
 
     @Override
     public int describeContents() {

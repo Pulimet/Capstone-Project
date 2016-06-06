@@ -1,6 +1,5 @@
 package net.alexandroid.network.portwatcher.ui.activities;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +11,8 @@ import android.widget.TextView;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
+import net.alexandroid.network.portwatcher.helpers.ShPref;
 import net.alexandroid.network.portwatcher.helpers.Utils;
-import net.alexandroid.network.portwatcher.objects.ScanItem;
-import net.alexandroid.network.portwatcher.services.ScanService;
 
 import java.util.ArrayList;
 
@@ -68,7 +66,6 @@ public class WidgetConfigActivity extends AppCompatActivity implements View.OnCl
 
     private void onFinishWidgetConfig() {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.widget_layout);
 
         String title = tvTitle.getText().toString().trim();
         String host = tvHost.getText().toString().trim();
@@ -85,19 +82,18 @@ public class WidgetConfigActivity extends AppCompatActivity implements View.OnCl
             Snackbar.make(tvHost, R.string.wrong_params, Snackbar.LENGTH_SHORT).show();
             return;
         }
-
-        remoteViews.setTextViewText(R.id.text, title);
-
-        Intent intent = new Intent(this, ScanService.class);
-        intent.putExtra(ScanService.EXTRA_HOST, host);
-        intent.putExtra(ScanService.EXTRA_SCAN_ID, -1);
-        intent.putIntegerArrayListExtra(ScanService.EXTRA_PORTS, Utils.convertStringToIntegerList(checkedPorts));
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setOnClickPendingIntent(R.id.text, pendingIntent);
-
+        RemoteViews remoteViews = Utils.createRemoteViewsForWidget(this, title, host, checkedPorts, mAppWidgetId);
         appWidgetManager.updateAppWidget(mAppWidgetId, remoteViews);
+        saveNewWidget(title, host, checkedPorts);
         finishActivity();
     }
+
+    private void saveNewWidget(String pTitle, String pHost, String ports) {
+        ShPref.put(R.string.key_widget_title + mAppWidgetId, pTitle);
+        ShPref.put(R.string.key_widget_host + mAppWidgetId, pHost);
+        ShPref.put(R.string.key_widget_ports + mAppWidgetId, ports);
+    }
+
 
     private void finishActivity() {
         Intent resultValue = new Intent();

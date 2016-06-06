@@ -7,4 +7,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="widget_margin_bottom">24dp</dimen>
+    <dimen name="widget_margin_top">24dp</dimen>
+    <dimen name="widget_text_size">18sp</dimen>
 </resources>

@@ -3,8 +3,8 @@
               xmlns:tool="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_marginBottom="24dp"
-              android:layout_marginTop="24dp"
+              android:layout_marginBottom="@dimen/widget_margin_bottom"
+              android:layout_marginTop="@dimen/widget_margin_top"
               android:background="@color/colorPrimaryTrans70"
               android:orientation="vertical">
 
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:textColor="@color/colorAccent"
-        android:textSize="18sp"
+        android:textSize="@dimen/widget_text_size"
         tool:text="TEST"/>
 
 </LinearLayout>

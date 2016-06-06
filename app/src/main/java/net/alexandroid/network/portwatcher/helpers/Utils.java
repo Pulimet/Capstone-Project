@@ -2,7 +2,9 @@ package net.alexandroid.network.portwatcher.helpers;
 
 
 import android.annotation.TargetApi;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,8 +17,11 @@ import android.support.v4.content.ContextCompat;
 import android.util.SparseIntArray;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RemoteViews;
 import android.widget.Spinner;
 
+import net.alexandroid.network.portwatcher.R;
+import net.alexandroid.network.portwatcher.services.ScanService;
 import net.alexandroid.network.portwatcher.task.PortScanRunnable;
 
 import java.text.SimpleDateFormat;
@@ -236,5 +241,17 @@ public class Utils {
         builder.append("|");
         builder.append(pInterval);
         return builder.toString();
+    }
+
+    public static RemoteViews createRemoteViewsForWidget(Context context, String pTitle, String pHost, String pCheckedPorts, int widgetId) {
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+        remoteViews.setTextViewText(R.id.text, pTitle);
+        Intent intent = new Intent(context, ScanService.class);
+        intent.putExtra(ScanService.EXTRA_HOST, pHost);
+        intent.putExtra(ScanService.EXTRA_SCAN_ID, -1);
+        intent.putIntegerArrayListExtra(ScanService.EXTRA_PORTS, Utils.convertStringToIntegerList(pCheckedPorts));
+        PendingIntent pendingIntent = PendingIntent.getService(context, widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setOnClickPendingIntent(R.id.text, pendingIntent);
+        return  remoteViews;
     }
 }
