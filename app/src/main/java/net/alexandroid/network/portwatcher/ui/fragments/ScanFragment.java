@@ -1,7 +1,6 @@
 package net.alexandroid.network.portwatcher.ui.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,14 +27,16 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
+
 import net.alexandroid.network.portwatcher.MyApplication;
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
 import net.alexandroid.network.portwatcher.events.PortScanFinishEvent;
+import net.alexandroid.network.portwatcher.exceptions.ContextIsNullException;
+import net.alexandroid.network.portwatcher.helpers.Contextor;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
 import net.alexandroid.network.portwatcher.helpers.Utils;
-import net.alexandroid.network.portwatcher.objects.ScanItem;
-import net.alexandroid.network.portwatcher.services.ScanService;
 import net.alexandroid.network.portwatcher.task.PingRunnable;
 import net.alexandroid.network.portwatcher.task.PortScanRunnable;
 import net.alexandroid.network.portwatcher.ui.activities.MainActivity;
@@ -234,7 +235,6 @@ public class ScanFragment extends Fragment implements
     }
 
 
-
     private void setResultsRed(ArrayList<Integer> pList) {
         StringBuilder result = new StringBuilder();
         for (Integer num : pList) {
@@ -360,7 +360,14 @@ public class ScanFragment extends Fragment implements
 
     // PING
     private void checkAndPing() {
-        if (Utils.isNetworkAvailable(getContext().getApplicationContext())) {
+        Context context = Contextor.getInstance().getContext();
+        if (context == null) {
+            try {
+                throw new ContextIsNullException("ScanFragment#checkAndPing - context is null");
+            } catch (ContextIsNullException e) {
+                Crashlytics.logException(e);
+            }
+        } else if (Utils.isNetworkAvailable(context)) {
             new Thread(new PingRunnable(MainActivity.strLastQuery, new PingRunnable.CallBack() {
                 @Override
                 public void onResult(String strHost, boolean pingResult) {
@@ -387,6 +394,7 @@ public class ScanFragment extends Fragment implements
     };
 
     // Buttons creation
+
     private void populateBtns(Cursor cursor) {
         try {
             while (cursor.moveToNext()) {
@@ -444,8 +452,6 @@ public class ScanFragment extends Fragment implements
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
-
-
 
 
     /**
