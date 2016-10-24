@@ -27,21 +27,11 @@ android {
         versionName "1.03"
     }
 
-    signingConfigs {
-        config {
-            keyAlias 'portwatcher'
-            keyPassword '1qaz@wsx'
-            storeFile file("$rootProject.projectDir/keystore.jks")
-            storePassword '1qaz@wsx'
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
     }
 
