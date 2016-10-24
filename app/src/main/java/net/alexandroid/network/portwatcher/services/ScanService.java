@@ -112,7 +112,9 @@ public class ScanService extends Service {
 
         @Override
         public void onResult(String host, int port, int state) {
+            // TODO SparseIntArray is not thread safe. URGENT!
             scanResults.put(port, state);
+
             if (scanId == ScanFragment.sScanId) {
                 EventBus.getDefault().post(new PortScanFinishEvent(host, scanResults, scanResults.size() == scanTotal));
             }
