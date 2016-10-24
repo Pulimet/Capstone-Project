@@ -4,7 +4,10 @@ package net.alexandroid.network.portwatcher.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.res.Resources;
 import android.widget.RemoteViews;
+
+import com.crashlytics.android.Crashlytics;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.helpers.ShPref;
@@ -16,9 +19,16 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
-            String title = ShPref.getString(R.string.key_widget_title + appWidgetId, "");
-            String host = ShPref.getString(R.string.key_widget_host + appWidgetId, "");
-            String ports = ShPref.getString(R.string.key_widget_ports + appWidgetId, "");
+            String title = null;
+            String host = null;
+            String ports = null;
+            try {
+                title = ShPref.getString(R.string.key_widget_title + appWidgetId, "");
+                host = ShPref.getString(R.string.key_widget_host + appWidgetId, "");
+                ports = ShPref.getString(R.string.key_widget_ports + appWidgetId, "");
+            } catch (Resources.NotFoundException e) {
+                Crashlytics.logException(e);
+            }
             RemoteViews remoteViews = Utils.createRemoteViewsForWidget(context, title, host, ports, appWidgetId);
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
