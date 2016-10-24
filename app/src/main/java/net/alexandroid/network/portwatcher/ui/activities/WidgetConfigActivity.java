@@ -2,12 +2,15 @@ package net.alexandroid.network.portwatcher.ui.activities;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.TextView;
+
+import com.crashlytics.android.Crashlytics;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.helpers.MyLog;
@@ -89,9 +92,13 @@ public class WidgetConfigActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void saveNewWidget(String pTitle, String pHost, String ports) {
-        ShPref.put(R.string.key_widget_title + mAppWidgetId, pTitle);
-        ShPref.put(R.string.key_widget_host + mAppWidgetId, pHost);
-        ShPref.put(R.string.key_widget_ports + mAppWidgetId, ports);
+        try {
+            ShPref.put(R.string.key_widget_title + mAppWidgetId, pTitle);
+            ShPref.put(R.string.key_widget_host + mAppWidgetId, pHost);
+            ShPref.put(R.string.key_widget_ports + mAppWidgetId, ports);
+        } catch (Resources.NotFoundException e) {
+            Crashlytics.logException(e);
+        }
     }
 
 

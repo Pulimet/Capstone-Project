@@ -363,7 +363,7 @@ public class ScanFragment extends Fragment implements
         Context context = Contextor.getInstance().getContext();
         if (context == null) {
             try {
-                throw new ContextIsNullException("ScanFragment#checkAndPing - context is null");
+                throw new ContextIsNullException("ScanFragment#checkAndPing - context is null. isAdded(): " + isAdded());
             } catch (ContextIsNullException e) {
                 Crashlytics.logException(e);
             }

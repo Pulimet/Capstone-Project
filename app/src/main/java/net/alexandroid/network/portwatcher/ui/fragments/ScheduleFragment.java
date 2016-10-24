@@ -176,6 +176,10 @@ public class ScheduleFragment extends Fragment
                         String newHost = etHost.getText().toString().trim();
                         String newPorts = etPort.getText().toString().trim();
                         String newInterval = etInterval.getText().toString().trim();
+                        if (newInterval.length() == 0\) {
+                            Snackbar.make(etHost, R.string.wrong_params, Snackbar.LENGTH_SHORT).show();
+                            return;
+                        }
                         newInterval = Utils.formatIntervalToMs(newInterval, mSpinner);
                         ArrayList<Integer> list = Utils.convertStringToIntegerList(newPorts);
                         String checkedPorts = Utils.convertIntegerListToString(list);
