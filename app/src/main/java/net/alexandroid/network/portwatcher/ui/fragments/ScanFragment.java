@@ -14,7 +14,6 @@ import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +45,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -255,18 +257,19 @@ public class ScanFragment extends Fragment implements
         }
     }
 
-    private void setResults(SparseIntArray results) {
-
+    private void setResults(ConcurrentHashMap<Integer, Integer> results) {
         StringBuilder result = new StringBuilder();
-
         int firstRangeNum = 0;
 
-        for (int i = 0; i < results.size(); i++) {
-            int port = results.keyAt(i); // port num
+        List<Integer> ports = new ArrayList<>(results.keySet());
+        Collections.sort(ports);
+
+        for (int i = 0; i < ports.size(); i++) {
+            int port = ports.get(i);
             int nextPort = 0;
             boolean isNextPortOpen = false;
-            if (i + 1 < results.size()) {
-                nextPort = results.keyAt(i + 1);
+            if (i + 1 < ports.size()) {
+                nextPort = ports.get(i + 1);
                 isNextPortOpen = results.get(nextPort) == PortScanRunnable.OPEN;
             }
             // get the object by the key.
