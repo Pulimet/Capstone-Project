@@ -1,13 +1,13 @@
 package net.alexandroid.network.portwatcher.events;
 
-import android.util.SparseIntArray;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PortScanFinishEvent {
     public final String host;
-    public final SparseIntArray scanResults;
+    public final ConcurrentHashMap<Integer, Integer>  scanResults;
     public final boolean isListScanFinished;
 
-    public PortScanFinishEvent(String host, SparseIntArray scanResults, boolean isListScanFinished) {
+    public PortScanFinishEvent(String host, ConcurrentHashMap<Integer, Integer> scanResults, boolean isListScanFinished) {
         this.host = host;
         this.scanResults = scanResults;
         this.isListScanFinished = isListScanFinished;

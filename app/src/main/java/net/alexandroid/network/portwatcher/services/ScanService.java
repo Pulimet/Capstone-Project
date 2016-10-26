@@ -15,7 +15,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
-import android.util.SparseIntArray;
 
 import net.alexandroid.network.portwatcher.MyApplication;
 import net.alexandroid.network.portwatcher.R;
@@ -34,6 +33,7 @@ import net.alexandroid.network.portwatcher.ui.fragments.ScanFragment;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class ScanService extends Service {
@@ -44,7 +44,6 @@ public class ScanService extends Service {
 
     private static int notifId;
 
-    private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
 
     @Override
@@ -54,8 +53,7 @@ public class ScanService extends Service {
         thread.start();
 
         // Get the HandlerThread's Looper and use it for our Handler
-        mServiceLooper = thread.getLooper();
-        mServiceHandler = new ServiceHandler(mServiceLooper);
+        mServiceHandler = new ServiceHandler(thread.getLooper());
     }
 
     @Nullable
@@ -92,7 +90,7 @@ public class ScanService extends Service {
         private int scanId;
         private int serviceId;
         private int scanTotal;
-        private SparseIntArray scanResults = new SparseIntArray();
+        private ConcurrentHashMap<Integer, Integer> scanResults = new ConcurrentHashMap<>();
 
         public ServiceHandler(Looper looper) {
             super(looper);
@@ -116,7 +114,9 @@ public class ScanService extends Service {
             scanResults.put(port, state);
 
             if (scanId == ScanFragment.sScanId) {
-                EventBus.getDefault().post(new PortScanFinishEvent(host, scanResults, scanResults.size() == scanTotal));
+                EventBus.getDefault().post(
+                        new PortScanFinishEvent(host, scanResults, scanResults.size() == scanTotal)
+                );
             }
             if (scanResults.size() == scanTotal) {
 
@@ -135,12 +135,12 @@ public class ScanService extends Service {
                     .setContentTitle(getString(R.string.scan_results) + " " + host);
 
             StringBuilder strText = new StringBuilder();
-            String openPorts = Utils.convertSpareIntArrToOpenPortsString(scanResults);
+            String openPorts = Utils.convertMapToOpenPortsString(scanResults);
             if (openPorts.length() > 0) {
                 strText.append(getString(R.string.open));
                 strText.append(openPorts);
             }
-            String closedPorts = Utils.convertSpareIntArrToClosePortsString(scanResults);
+            String closedPorts = Utils.convertMapToClosePortsString(scanResults);
             if (closedPorts.length() > 0) {
                 strText.append(getString(R.string.closed));
                 strText.append(closedPorts);
@@ -168,9 +168,9 @@ public class ScanService extends Service {
         private PendingIntent getShowResultsPendingIntent(String host) {
             ScanItem scanItem = new ScanItem(
                     host,
-                    Utils.convertSpareIntArrToPortsString(scanResults),
+                    Utils.convertMapToPortsString(scanResults),
                     String.valueOf(System.currentTimeMillis()),
-                    Utils.convertSpareIntArrToOpenPortsString(scanResults)
+                    Utils.convertMapToOpenPortsString(scanResults)
             );
 
             Intent intentShowResults = new Intent(ScanService.this, ResultActivity.class);
@@ -189,8 +189,8 @@ public class ScanService extends Service {
             ContentValues contentValues =
                     DbHelper.getHistoryContentValues(
                             host,
-                            Utils.convertSpareIntArrToPortsString(scanResults),
-                            Utils.convertSpareIntArrToOpenPortsString(scanResults),
+                            Utils.convertMapToPortsString(scanResults),
+                            Utils.convertMapToOpenPortsString(scanResults),
                             System.currentTimeMillis());
             contentResolver.insert(DbContract.HistoryEntry.CONTENT_URI, contentValues);
         }
