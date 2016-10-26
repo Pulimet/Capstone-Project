@@ -30,8 +30,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
-import com.startapp.android.publish.StartAppAd;
-import com.startapp.android.publish.StartAppSDK;
 
 import net.alexandroid.network.portwatcher.R;
 import net.alexandroid.network.portwatcher.data.DbContract;
@@ -59,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements
         EditFragment.EditFragmentInteractionListener,
         ScheduleFragment.ScheduleFragmentInteractionListener {
 
+    public final static String MY_AD_EDIT_UNIT_ID = "ca-app-pub-2377201727291572/6272438209";
+    public final static String MY_AD_EXIT_UNIT_ID = "ca-app-pub-2377201727291572/9080577402";
+
     public static final int FRAGMENT_MAIN_HISTORY = 0;
     public static final int FRAGMENT_SCAN = 1;
     public static final int FRAGMENT_EDIT = 2;
@@ -79,13 +80,11 @@ public class MainActivity extends AppCompatActivity implements
 
     private GcmNetworkManager mGcmNetworkManager;
 
-    private InterstitialAd mInterstitialAd;
-    private StartAppAd startAppAd = new StartAppAd(this);
+    private InterstitialAd mInterstitialAdForEdit, mInterstitialAdForExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StartAppSDK.init(this, "205232173", false);
         setContentView(R.layout.activity_main);
 
         seToolBarAndNavigation();
@@ -99,24 +98,38 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initAdMob() {
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.banner_ad_unit_id));
+        // Edit
+        mInterstitialAdForEdit = new InterstitialAd(this);
+        mInterstitialAdForEdit.setAdUnitId(MY_AD_EDIT_UNIT_ID);
 
-        mInterstitialAd.setAdListener(new AdListener() {
+        mInterstitialAdForEdit.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
-                requestNewInterstitial();
+                requestNewInterstitial(mInterstitialAdForEdit);
             }
         });
-        requestNewInterstitial();
+        requestNewInterstitial(mInterstitialAdForEdit);
+
+        // Exit
+
+        mInterstitialAdForExit = new InterstitialAd(this);
+        mInterstitialAdForExit.setAdUnitId(MY_AD_EXIT_UNIT_ID);
+
+        mInterstitialAdForExit.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                finish();
+            }
+        });
+        requestNewInterstitial(mInterstitialAdForExit);
     }
 
-    private void requestNewInterstitial() {
+    private void requestNewInterstitial(InterstitialAd ad) {
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice("441009D6951E7B1833F74A291BCF74D7")
                 .build();
 
-        mInterstitialAd.loadAd(adRequest);
+        ad.loadAd(adRequest);
     }
 
 
@@ -139,8 +152,9 @@ public class MainActivity extends AppCompatActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (mInterstitialAdForExit.isLoaded()) {
+            mInterstitialAdForExit.show();
         } else {
-            startAppAd.onBackPressed();
             super.onBackPressed();
         }
     }
@@ -197,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements
                 mToolbar.setSubtitle(R.string.scan);
                 break;
             case R.id.nav_edit:
-                mInterstitialAd.show();
+                mInterstitialAdForEdit.show();
                 replaceFragmentWith(FRAGMENT_EDIT, false);
                 mToolbar.setSubtitle(R.string.edit);
                 break;
