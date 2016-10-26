@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void requestNewInterstitial(InterstitialAd ad) {
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("441009D6951E7B1833F74A291BCF74D7")
+                .addTestDevice("0694A3AE02A5874D3DB2202B251F156A")
                 .build();
 
         ad.loadAd(adRequest);
